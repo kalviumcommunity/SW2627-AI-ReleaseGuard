@@ -506,6 +506,12 @@ The project's standard development process is:
 
 This workflow keeps the repository organized, maintains a stable main branch, and provides a clear history of development decisions.
 
+## Contribution Guidelines
+
+- Keep commits focused and descriptive.
+- Test changes before creating a Pull Request.
+- Do not push unfinished changes directly to `main`.
+
 
 
 ```
