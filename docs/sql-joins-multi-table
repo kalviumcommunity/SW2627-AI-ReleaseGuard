@@ -1,0 +1,534 @@
+Create this file:
+
+**`docs/sql-joins-multi-table-analysis.md`**
+
+````md
+# SQL Joins & Multi-Table Analysis
+
+## Overview
+
+This document demonstrates SQL joins across multiple relational tables and explains how to validate row counts, detect unmatched keys, compare join types, and maintain correct data lineage.
+
+The analysis focuses on the following tables:
+
+- `customers`
+- `orders`
+- `order_items`
+- `products`
+
+---
+
+## Objectives
+
+- Implement `LEFT JOIN`, `INNER JOIN`, and `FULL OUTER JOIN`
+- Validate row counts before and after joins
+- Calculate the multiplication factor caused by one-to-many relationships
+- Detect customers without orders
+- Detect orphaned orders without matching customers
+- Perform multi-table joins across 3 or more tables
+- Validate joins against unexpected duplication
+- Document join decisions and business use cases
+
+---
+
+# Task 1: LEFT JOIN with Row Count Validation
+
+## Query
+
+```sql
+SELECT 
+    c.customer_id,
+    c.customer_type,
+    COUNT(DISTINCT o.order_id) AS order_count,
+    SUM(o.order_amount) AS total_spent
+FROM customers c
+LEFT JOIN orders o
+    ON c.customer_id = o.customer_id
+GROUP BY 
+    c.customer_id,
+    c.customer_type
+ORDER BY total_spent DESC NULLS LAST;
+````
+
+## Python Validation
+
+```python
+customers_count = len(customers)
+
+joined = pd.read_sql(query, engine)
+
+print(f"Before: {customers_count} customers")
+print(f"After: {len(joined)} rows")
+
+change = len(joined) - customers_count
+percentage = (change / customers_count) * 100
+
+print(f"Change: {change} ({percentage:.1f}%)")
+
+multiplication_factor = len(joined) / customers_count
+print(f"Multiplication factor: {multiplication_factor:.2f}x")
+```
+
+## Validation Logic
+
+A `LEFT JOIN` keeps every customer from the `customers` table.
+
+Customers with multiple orders can have multiple matching records at the raw join level. Therefore, row counts can increase when joining a one-to-many relationship.
+
+The multiplication factor is calculated as:
+
+```text
+Multiplication Factor = Rows After Join / Rows Before Join
+```
+
+This helps identify whether the join caused expected row multiplication.
+
+---
+
+# Task 2: Detect Unmatched Keys
+
+## Customers Without Orders
+
+```sql
+SELECT 
+    c.customer_id,
+    c.customer_type,
+    c.signup_date
+FROM customers c
+LEFT JOIN orders o
+    ON c.customer_id = o.customer_id
+WHERE o.order_id IS NULL
+ORDER BY c.signup_date;
+```
+
+## Orders Without Matching Customers
+
+```sql
+SELECT 
+    o.order_id,
+    o.customer_id,
+    o.order_date
+FROM orders o
+LEFT JOIN customers c
+    ON o.customer_id = c.customer_id
+WHERE c.customer_id IS NULL
+ORDER BY o.order_date;
+```
+
+## Python Analysis
+
+```python
+no_orders = pd.read_sql(
+    """
+    SELECT c.customer_id, c.customer_type, c.signup_date
+    FROM customers c
+    LEFT JOIN orders o
+        ON c.customer_id = o.customer_id
+    WHERE o.order_id IS NULL
+    """,
+    engine
+)
+
+orphaned = pd.read_sql(
+    """
+    SELECT o.order_id, o.customer_id, o.order_date
+    FROM orders o
+    LEFT JOIN customers c
+        ON o.customer_id = c.customer_id
+    WHERE c.customer_id IS NULL
+    """,
+    engine
+)
+
+print(
+    f"Customers without orders: "
+    f"{len(no_orders)} "
+    f"({(len(no_orders) / len(customers)) * 100:.1f}%)"
+)
+
+print(f"Orphaned orders: {len(orphaned)}")
+
+if len(orphaned) > 0:
+    print("Orphaned records found - investigate customer_id mismatch")
+else:
+    print("No orphaned orders found")
+```
+
+## Validation Logic
+
+The `LEFT JOIN ... IS NULL` pattern identifies records that do not have a matching key in the other table.
+
+This helps detect:
+
+* Customers who have never placed an order
+* Orders referencing missing customers
+* Data integrity problems
+* Incorrect or inconsistent foreign keys
+
+---
+
+# Task 3: Compare Join Types
+
+## INNER JOIN
+
+Returns only records where a matching customer and order exist.
+
+```sql
+SELECT 
+    c.customer_id,
+    o.order_id,
+    o.order_amount
+FROM customers c
+INNER JOIN orders o
+    ON c.customer_id = o.customer_id;
+```
+
+## LEFT JOIN
+
+Returns all customers and matching orders where available.
+
+```sql
+SELECT 
+    c.customer_id,
+    o.order_id,
+    o.order_amount
+FROM customers c
+LEFT JOIN orders o
+    ON c.customer_id = o.customer_id;
+```
+
+## FULL OUTER JOIN
+
+Returns all matching and unmatched records from both tables.
+
+```sql
+SELECT 
+    c.customer_id,
+    o.order_id,
+    o.order_amount
+FROM customers c
+FULL OUTER JOIN orders o
+    ON c.customer_id = o.customer_id;
+```
+
+## Python Comparison
+
+```python
+inner = pd.read_sql(
+    """
+    SELECT c.customer_id, o.order_id, o.order_amount
+    FROM customers c
+    INNER JOIN orders o
+        ON c.customer_id = o.customer_id
+    """,
+    engine
+)
+
+left = pd.read_sql(
+    """
+    SELECT c.customer_id, o.order_id, o.order_amount
+    FROM customers c
+    LEFT JOIN orders o
+        ON c.customer_id = o.customer_id
+    """,
+    engine
+)
+
+full = pd.read_sql(
+    """
+    SELECT c.customer_id, o.order_id, o.order_amount
+    FROM customers c
+    FULL OUTER JOIN orders o
+        ON c.customer_id = o.customer_id
+    """,
+    engine
+)
+
+print(f"INNER: {len(inner)} rows")
+print(f"LEFT:  {len(left)} rows")
+print(f"FULL:  {len(full)} rows")
+
+assert len(left) >= len(inner)
+assert len(full) >= len(inner)
+
+print("Join relationship validation completed.")
+```
+
+## Join Comparison
+
+| Join Type       | Records Returned                                |
+| --------------- | ----------------------------------------------- |
+| INNER JOIN      | Only matching records                           |
+| LEFT JOIN       | All left-table records + matching right records |
+| FULL OUTER JOIN | All records from both tables                    |
+
+---
+
+# Task 4: Multi-Table Join
+
+The following query connects four tables:
+
+`customers → orders → order_items → products`
+
+```sql
+SELECT 
+    c.customer_id,
+    c.customer_type,
+    o.order_id,
+    o.order_date,
+    oi.product_id,
+    p.product_name,
+    oi.quantity,
+    oi.unit_price,
+    (oi.quantity * oi.unit_price) AS line_total
+FROM customers c
+LEFT JOIN orders o
+    ON c.customer_id = o.customer_id
+LEFT JOIN order_items oi
+    ON o.order_id = oi.order_id
+LEFT JOIN products p
+    ON oi.product_id = p.product_id
+WHERE c.customer_type = 'Enterprise'
+ORDER BY o.order_date DESC;
+```
+
+## Data Lineage
+
+```text
+customers
+    |
+    | customer_id
+    v
+orders
+    |
+    | order_id
+    v
+order_items
+    |
+    | product_id
+    v
+products
+```
+
+## Python Validation
+
+```python
+result = pd.read_sql(query, engine)
+
+product_total = (
+    result.groupby("product_id")["line_total"]
+    .sum()
+)
+
+expected_total = pd.read_sql(
+    """
+    SELECT SUM(quantity * unit_price)
+    FROM order_items
+    """,
+    engine
+).iloc[0, 0]
+
+actual_total = product_total.sum()
+
+if expected_total is not None:
+    assert abs(actual_total - expected_total) < 0.01, \
+        "Possible duplication in multi-table join!"
+
+print("Multi-table join validation completed.")
+```
+
+## Important Validation Note
+
+Multi-table joins can multiply rows when tables contain one-to-many relationships.
+
+For example:
+
+```text
+1 customer
+   ↓
+6 orders
+   ↓
+multiple order items
+```
+
+The final result may contain multiple rows for the same customer and order.
+
+Therefore, aggregations should be performed at the appropriate level to avoid double-counting.
+
+---
+
+# Task 5: Join Strategy Documentation
+
+## Table Structure
+
+| Table       | Approx. Rows | Key         |
+| ----------- | -----------: | ----------- |
+| customers   |         1000 | customer_id |
+| orders      |         5000 | order_id    |
+| order_items |         8000 | order_id    |
+| products    |          500 | product_id  |
+
+## Join Decision 1: Customers → Orders
+
+**Join Type:** `LEFT JOIN`
+
+**Purpose:**
+Retrieve all customers together with their order history.
+
+**Expected relationship:**
+
+```text
+1 customer → many orders
+```
+
+**Row-count consideration:**
+Customers without orders must still remain in the result.
+
+**Business use cases:**
+
+* Customer lifetime value
+* Customer segmentation
+* Order history
+* Customer activity analysis
+
+---
+
+## Join Decision 2: Orders → Order Items
+
+**Join Type:** `LEFT JOIN`
+
+**Purpose:**
+Retrieve detailed product line items belonging to each order.
+
+**Expected relationship:**
+
+```text
+1 order → many order items
+```
+
+**Row-count consideration:**
+Orders containing multiple products will generate multiple result rows.
+
+**Business use cases:**
+
+* Product revenue analysis
+* Inventory analysis
+* Product performance
+* Order-level analysis
+
+---
+
+## Join Decision 3: Order Items → Products
+
+**Join Type:** `LEFT JOIN`
+
+**Purpose:**
+Attach product information to each order item.
+
+**Expected relationship:**
+
+```text
+1 product → many order items
+```
+
+**Business use cases:**
+
+* Product-level revenue
+* Product category analysis
+* Sales reporting
+
+---
+
+# Join Validation Checklist
+
+Before accepting a join, verify:
+
+* [ ] Row count before the join is known
+* [ ] Row count after the join is known
+* [ ] Join keys are identified
+* [ ] Primary and foreign key relationships are understood
+* [ ] Expected one-to-one or one-to-many relationship is documented
+* [ ] Unmatched keys are checked
+* [ ] Unexpected row multiplication is investigated
+* [ ] Aggregations are performed at the correct level
+* [ ] Business purpose of the join is documented
+* [ ] Data lineage is traceable
+
+---
+
+# Why Row Count Validation Matters
+
+Row count validation prevents silent data-quality problems.
+
+A join can produce more rows than expected because of:
+
+* One-to-many relationships
+* Duplicate keys
+* Incorrect join conditions
+* Many-to-many relationships
+* Unexpected unmatched records
+
+Without validation, these issues can lead to:
+
+* Double-counted revenue
+* Incorrect customer metrics
+* Inflated transaction counts
+* Incorrect business reports
+
+Therefore, row counts should always be compared before and after important joins.
+
+---
+
+# Key SQL Patterns
+
+## Find unmatched records
+
+```sql
+LEFT JOIN other_table
+    ON table_a.id = other_table.id
+WHERE other_table.id IS NULL;
+```
+
+## Count distinct keys
+
+```sql
+COUNT(DISTINCT customer_id)
+```
+
+## Calculate multiplication factor
+
+```text
+Rows After Join / Rows Before Join
+```
+
+## Check for duplicate keys
+
+```sql
+SELECT 
+    customer_id,
+    COUNT(*) AS record_count
+FROM orders
+GROUP BY customer_id
+HAVING COUNT(*) > 1;
+```
+
+---
+
+# Conclusion
+
+SQL joins allow data to be combined across related tables, but every join should be validated.
+
+The main principles demonstrated in this analysis are:
+
+1. `INNER JOIN` returns matched records.
+2. `LEFT JOIN` preserves all records from the left table.
+3. `FULL OUTER JOIN` preserves records from both tables.
+4. One-to-many relationships can increase row counts.
+5. `LEFT JOIN ... IS NULL` can identify unmatched records.
+6. Multi-table joins require careful row-count and duplication validation.
+7. Join decisions should be documented with their business purpose and expected impact.
+
+Proper join validation helps ensure that multi-table analysis remains accurate, traceable, and free from silent duplication errors.
+
+```
+```
