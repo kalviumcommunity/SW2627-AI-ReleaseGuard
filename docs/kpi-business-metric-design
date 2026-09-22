@@ -1,0 +1,389 @@
+````markdown
+# KPI Definition & Business Metric Design
+
+## 1. Overview
+
+This assignment defines business KPIs formally so that stakeholders can use consistent metric definitions, formulas, targets, and computation methods.
+
+The analysis focuses on converting raw business measurements into reusable KPIs that can be calculated consistently from the available data.
+
+---
+
+## 2. Objectives
+
+The KPI analysis aims to:
+
+- Define at least five business KPIs.
+- Document each KPI with its definition, formula, source, target, owner, frequency, and notes.
+- Implement reusable Python functions for KPI computation.
+- Validate calculated KPIs against defined target ranges.
+- Generate a KPI validation report.
+- Decompose a top-level KPI into lower-level business components.
+- Store KPI definitions and targets in version-controlled files.
+
+---
+
+## 3. KPI Definitions
+
+The project defines the following KPIs:
+
+### 3.1 Monthly Active Users (MAU)
+
+**Definition:** Distinct customers with at least one transaction during the last 30 days.
+
+**Formula:**
+
+```text
+COUNT(DISTINCT customer_id)
+WHERE transaction_date >= TODAY() - 30 days
+````
+
+**Data Source:** Transactions data
+**Target Range:** 5,000–6,000
+**Owner:** Product Manager
+**Update Frequency:** Daily
+
+**Notes:** Measures recent customer engagement.
+
+---
+
+### 3.2 Revenue per Customer
+
+**Definition:** Average revenue generated per unique customer.
+
+**Formula:**
+
+```text
+Total Revenue / Unique Customers
+```
+
+**Data Source:** Transaction amount and customer ID
+**Target Range:** $90–$110
+**Owner:** Finance / Business Team
+**Update Frequency:** Daily
+
+**Notes:** Provides context for revenue relative to the customer base.
+
+---
+
+### 3.3 Churn Rate
+
+**Definition:** Percentage of customers active in a previous period who are not active in the current period.
+
+**Formula:**
+
+```text
+Churned Customers / Customers Active in Previous Period
+```
+
+**Data Source:** Customer ID and transaction date
+**Target Range:** 0%–5%
+**Owner:** Customer Success Team
+**Update Frequency:** Daily
+
+**Notes:** Indicates customer retention performance.
+
+---
+
+### 3.4 Payment Success Rate
+
+**Definition:** Percentage of payment attempts that are completed successfully.
+
+**Formula:**
+
+```text
+Successful Payments / Total Payment Attempts
+```
+
+**Data Source:** Payment transaction records
+**Target Range:** 95%–100%
+**Owner:** Payments / Engineering Team
+**Update Frequency:** Daily
+
+**Notes:** Measures payment reliability.
+
+---
+
+### 3.5 Customer Acquisition Cost (CAC)
+
+**Definition:** Average cost required to acquire one customer.
+
+**Formula:**
+
+```text
+Total Acquisition Cost / New Customers Acquired
+```
+
+**Data Source:** Marketing spend and customer acquisition data
+**Target Range:** $0–$50
+**Owner:** Marketing Team
+**Update Frequency:** Monthly
+
+**Notes:** Helps evaluate customer acquisition efficiency.
+
+---
+
+## 4. KPI Computation
+
+Reusable Python functions are used so that KPI calculations remain consistent.
+
+Example functions include:
+
+```python
+def calculate_mau(df, days=30):
+    """Calculate distinct customers active during the last N days."""
+    cutoff = pd.Timestamp.now() - pd.Timedelta(days=days)
+    return df[df['transaction_date'] >= cutoff]['customer_id'].nunique()
+
+
+def calculate_revenue_per_customer(df):
+    """Calculate average revenue per unique customer."""
+    unique_customers = df['customer_id'].nunique()
+
+    if unique_customers == 0:
+        return 0
+
+    return df['amount'].sum() / unique_customers
+
+
+def calculate_churn_rate(df, period_days=30):
+    """Calculate customers active previously but not in the current period."""
+    period_1_end = pd.Timestamp.now() - pd.Timedelta(days=period_days)
+    period_1_start = period_1_end - pd.Timedelta(days=period_days)
+
+    active_p1 = df[
+        (df['transaction_date'] >= period_1_start) &
+        (df['transaction_date'] <= period_1_end)
+    ]['customer_id'].unique()
+
+    active_p2 = df[
+        df['transaction_date'] >= period_1_end
+    ]['customer_id'].unique()
+
+    if len(active_p1) == 0:
+        return 0
+
+    churned = len([x for x in active_p1 if x not in active_p2])
+
+    return churned / len(active_p1)
+```
+
+The functions accept a DataFrame so they can be reused with different datasets.
+
+---
+
+## 5. Target Validation
+
+Each KPI is compared against a predefined target range.
+
+Example target configuration:
+
+```json
+{
+  "monthly_active_users": {
+    "min": 5000,
+    "max": 6000
+  },
+  "revenue_per_customer": {
+    "min": 90,
+    "max": 110
+  },
+  "churn_rate": {
+    "min": 0,
+    "max": 0.05
+  },
+  "payment_success_rate": {
+    "min": 0.95,
+    "max": 1.0
+  },
+  "customer_acquisition_cost": {
+    "min": 0,
+    "max": 50
+  }
+}
+```
+
+The validation process checks whether each actual KPI value falls within its defined target range.
+
+Possible statuses are:
+
+```text
+PASS
+ALERT
+```
+
+A `PASS` indicates that the KPI is within the target range.
+
+An `ALERT` indicates that the KPI is outside the target range and requires review.
+
+---
+
+## 6. KPI Validation Report
+
+The validation report contains:
+
+| Field      | Description              |
+| ---------- | ------------------------ |
+| KPI        | KPI name                 |
+| Actual     | Calculated KPI value     |
+| Target Min | Minimum acceptable value |
+| Target Max | Maximum acceptable value |
+| Status     | PASS or ALERT            |
+
+This provides a consistent view of current KPI performance against defined expectations.
+
+---
+
+## 7. KPI Decomposition
+
+Top-level KPIs can be broken down into smaller business components.
+
+### Total Revenue
+
+```text
+Total Revenue
+│
+├── Revenue by Customer Segment
+│   ├── Enterprise
+│   ├── SMB
+│   └── Startup
+│
+└── Revenue by Product
+    ├── Product A
+    ├── Product B
+    └── Product C
+```
+
+The decomposition allows stakeholders to understand how lower-level components contribute to the overall KPI.
+
+For example:
+
+```python
+total_revenue = df['amount'].sum()
+
+revenue_by_segment = (
+    df.groupby('customer_type')['amount']
+    .sum()
+)
+
+revenue_by_product = (
+    df.groupby('product')['amount']
+    .sum()
+)
+```
+
+The segment and product values should reconcile with the corresponding total revenue.
+
+---
+
+## 8. KPI Governance
+
+Each KPI should have a clearly documented:
+
+* Name
+* Definition
+* Formula
+* Data source
+* Target range
+* Owner
+* Update frequency
+* Notes
+
+This prevents different teams from calculating the same KPI using different definitions.
+
+If the underlying data schema changes, the KPI formula and data-source documentation should also be reviewed and updated.
+
+---
+
+## 9. Project Structure
+
+The KPI implementation follows this structure:
+
+```text
+kpis/
+├── kpi_reference.md
+├── kpi_functions.py
+└── kpi_validation_targets.json
+```
+
+The files have the following responsibilities:
+
+### `kpi_reference.md`
+
+Contains formal definitions and business context for all KPIs.
+
+### `kpi_functions.py`
+
+Contains reusable Python functions for calculating KPIs.
+
+### `kpi_validation_targets.json`
+
+Contains configurable target ranges used for validation.
+
+---
+
+## 10. Workflow
+
+```text
+Load Dataset
+     ↓
+Validate Required Columns
+     ↓
+Define KPI Definitions
+     ↓
+Calculate KPI Values
+     ↓
+Load Target Ranges
+     ↓
+Compare Actual vs Target
+     ↓
+Generate Validation Report
+     ↓
+Decompose KPI
+     ↓
+Save Results
+```
+
+---
+
+## 11. Validation Checks
+
+The implementation verifies that:
+
+* At least five KPIs are defined.
+* Each KPI has a documented formula.
+* Each KPI has a defined data source.
+* Each KPI has a target range.
+* KPI computation functions accept a DataFrame.
+* KPI calculations return consistent values.
+* Target ranges are applied correctly.
+* KPIs outside their target ranges are flagged.
+* KPI decomposition reconciles with the top-level metric where applicable.
+* Required output files are generated.
+
+---
+
+## 12. Deliverables
+
+The assignment produces:
+
+```text
+kpis/kpi_reference.md
+kpis/kpi_functions.py
+kpis/kpi_validation_targets.json
+```
+
+The implementation should also generate the KPI validation results required by the analysis.
+
+---
+
+## 13. Conclusion
+
+Formal KPI definitions create a consistent measurement framework for business performance.
+
+By documenting formulas, data sources, targets, ownership, and update frequency, the project ensures that KPIs can be calculated consistently and interpreted using the same definitions across teams.
+
+Reusable computation functions and version-controlled target configurations further improve reproducibility and maintainability.
+
+```
+```
