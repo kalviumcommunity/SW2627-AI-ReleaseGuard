@@ -1,0 +1,340 @@
+````markdown
+# Behavioural Analysis & User Segmentation
+
+## 1. Overview
+
+This assignment performs behavioural analysis by dividing customers into meaningful segments and comparing their behaviour across multiple business metrics.
+
+Instead of relying only on overall averages, the analysis identifies differences between customer segments and translates those differences into actionable business insights.
+
+---
+
+## 2. Objectives
+
+The analysis aims to:
+
+- Define at least three meaningful customer segments.
+- Calculate multiple behavioural and business metrics for each segment.
+- Compare segments using summary statistics and rankings.
+- Visualize segment differences using a heatmap.
+- Identify top and bottom performing segments.
+- Generate business-facing insights and segment-specific actions.
+- Consider sample size when interpreting segment differences.
+
+---
+
+## 3. Dataset
+
+The analysis uses:
+
+```text
+data/raw/customer_behavior.csv
+````
+
+The dataset is expected to contain behavioural and customer-level fields such as:
+
+* `customer_id`
+* `customer_type`
+* `lifetime_value`
+* `churn`
+* `support_tickets`
+* `retention_days`
+
+### Segment Definition
+
+Customers are segmented using the `customer_type` column.
+
+The analysis compares at least three customer segments, such as:
+
+* Enterprise
+* SMB
+* Startup
+
+The actual segments depend on the values present in the dataset.
+
+---
+
+## 4. Segment Metrics
+
+Metrics are calculated using Pandas `groupby()` and aggregation.
+
+The following metrics are calculated for each segment:
+
+| Metric            | Description                        |
+| ----------------- | ---------------------------------- |
+| Average LTV       | Mean customer lifetime value       |
+| Churn Rate        | Mean churn value                   |
+| Average Tickets   | Mean number of support tickets     |
+| Average Retention | Mean retention duration            |
+| Customer Count    | Number of customers in the segment |
+
+Example:
+
+```python
+segment_metrics = df.groupby('customer_type').agg({
+    'lifetime_value': 'mean',
+    'churn': 'mean',
+    'support_tickets': 'mean',
+    'retention_days': 'mean',
+    'customer_id': 'count'
+})
+
+segment_metrics.columns = [
+    'avg_ltv',
+    'churn_rate',
+    'avg_tickets',
+    'avg_retention',
+    'count'
+]
+```
+
+The customer count is retained to provide context about the size of each segment.
+
+---
+
+## 5. Segment Comparison and Ranking
+
+Segments are ranked using multiple metrics to make comparisons easier.
+
+```python
+segment_summary = segment_metrics.copy()
+
+segment_summary['ltv_rank'] = (
+    segment_summary['avg_ltv'].rank(ascending=False)
+)
+
+segment_summary['churn_rank'] = (
+    segment_summary['churn_rate'].rank(ascending=True)
+)
+```
+
+This allows the analysis to compare:
+
+* High vs. low lifetime value.
+* High vs. low churn.
+* Relative segment performance.
+
+Both absolute metric values and rankings are retained.
+
+---
+
+## 6. Visual Comparison
+
+A heatmap is generated to compare multiple metrics across customer segments.
+
+The visualization includes:
+
+* Average lifetime value
+* Churn rate
+* Average support tickets
+
+Example:
+
+```python
+import matplotlib.pyplot as plt
+import seaborn as sns
+
+sns.heatmap(
+    segment_metrics[
+        ['avg_ltv', 'churn_rate', 'avg_tickets']
+    ],
+    annot=True,
+    cmap='RdYlGn'
+)
+
+plt.title('Segment Comparison Heatmap')
+plt.savefig('output/segment_heatmap.png')
+plt.close()
+```
+
+The heatmap makes differences between segments easier to identify visually.
+
+---
+
+## 7. Top and Bottom Segment Analysis
+
+The analysis identifies important segment-level differences.
+
+### Highest Value Segment
+
+The segment with the highest average lifetime value is identified using:
+
+```python
+top_segment = segment_metrics['avg_ltv'].idxmax()
+```
+
+### Highest Churn Segment
+
+The segment with the highest churn rate is identified using:
+
+```python
+high_churn = segment_metrics['churn_rate'].idxmax()
+```
+
+### Best Retention Segment
+
+The segment with the highest average retention is identified using:
+
+```python
+best_retention = segment_metrics['avg_retention'].idxmax()
+```
+
+These results provide a factual basis for segment-level business interpretation.
+
+---
+
+## 8. Business-Facing Insights
+
+Each segment should receive a specific business interpretation based on its observed metrics.
+
+For every segment, the analysis should document:
+
+* Its relative value.
+* Its churn behaviour.
+* Its support requirements.
+* Its retention behaviour.
+* A segment-specific business action.
+
+Insights should be based on observed metrics rather than generic assumptions.
+
+Example structure:
+
+```text
+SEGMENT STRATEGY SUMMARY:
+
+Enterprise:
+- Compare value, churn and retention against other segments.
+- Identify the specific behaviour that differentiates the segment.
+- Recommend an action based on the observed metrics.
+
+SMB:
+- Compare value, churn and support requirements.
+- Identify the main behavioural difference.
+- Recommend an appropriate action.
+
+Startup:
+- Compare value, churn and retention.
+- Identify the main behavioural pattern.
+- Recommend an appropriate action.
+```
+
+---
+
+## 9. Sample Size Considerations
+
+Segment comparisons should consider the number of customers in each segment.
+
+A segment with a very small customer count may produce unstable averages and should not automatically be treated as representative of the entire segment population.
+
+Therefore, `customer_count` is included alongside the other metrics.
+
+Large differences should be interpreted together with segment size rather than relying only on the ranking.
+
+---
+
+## 10. Actionability
+
+A difference between segments should be considered meaningful when:
+
+* It is large enough to have a potential business impact.
+* The difference is supported by sufficient observations.
+* The pattern is consistent across relevant metrics.
+* The resulting action can reasonably address the observed behaviour.
+
+The analysis describes observed differences rather than making unsupported causal claims.
+
+---
+
+## 11. Output Files
+
+The analysis generates the following outputs:
+
+### Segment Summary
+
+```text
+output/segment_summary.csv
+```
+
+Contains segment-level metrics and rankings.
+
+### Segment Heatmap
+
+```text
+output/segment_heatmap.png
+```
+
+Visualizes multiple metrics across customer segments.
+
+### Segment Insights
+
+```text
+output/segment_insights.json
+```
+
+Stores the identified segment-level findings and business insights.
+
+---
+
+## 12. Workflow
+
+The analysis follows this workflow:
+
+```text
+Load Dataset
+     ↓
+Validate Required Columns
+     ↓
+Define Customer Segments
+     ↓
+Calculate Segment Metrics
+     ↓
+Calculate Rankings
+     ↓
+Generate Heatmap
+     ↓
+Identify Top/Bottom Segments
+     ↓
+Generate Business Insights
+     ↓
+Save Outputs
+```
+
+---
+
+## 13. Validation
+
+The analysis verifies:
+
+* Required dataset columns are available.
+* At least three segments are present where supported by the data.
+* Four or more metrics are calculated for each segment.
+* Customer counts are included.
+* Rankings are generated for at least two metrics.
+* Heatmap contains at least three comparison metrics.
+* Output files are generated successfully.
+* Segment insights reference actual calculated metrics.
+
+---
+
+## 14. Deliverables
+
+The assignment produces:
+
+```text
+scripts/behavioural_segmentation.py
+output/segment_summary.csv
+output/segment_heatmap.png
+output/segment_insights.json
+docs/behavioural-user-segmentation.md
+```
+
+---
+
+## 15. Conclusion
+
+Behavioural segmentation makes differences between customer groups visible that can be hidden by aggregate reporting.
+
+By combining segment-level metrics, rankings, visualization, sample-size awareness, and business interpretation, the analysis provides a structured way to understand how different customer segments behave and where segment-specific strategies may be appropriate.
+
+```
+```
