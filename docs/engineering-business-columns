@@ -1,0 +1,236 @@
+````md
+# Feature Engineering & Derived Business Columns
+
+## Overview
+
+This project transforms raw customer transaction data into meaningful business features. Instead of relying only on raw transaction counts and spending totals, the pipeline creates ratios, customer tiers, and composite scores for better analysis and segmentation.
+
+## Problem
+
+Raw values such as transaction count, total spending, and customer lifetime do not always provide enough context.
+
+For example, 50 transactions over several years represents different customer behavior than 50 transactions in a single month.
+
+Feature engineering adds business meaning by normalizing values, creating customer segments, and combining multiple indicators.
+
+## Engineered Features
+
+The pipeline creates three main types of features:
+
+- Ratio features
+- Tiered/binned features
+- Composite scores
+
+## 1. Ratio Features
+
+### Transactions Per Month
+
+Measures customer transaction activity relative to the time they have been a customer.
+
+```python
+df["transactions_per_month"] = (
+    df["total_transactions"] / (df["days_as_customer"] / 30)
+)
+````
+
+### Average Spend Per Transaction
+
+Measures the average amount spent per transaction.
+
+```python
+df["avg_spend_per_transaction"] = (
+    df["total_spent"] / df["total_transactions"]
+)
+```
+
+### Lifetime Value Per Month
+
+Normalizes total customer spending by the customer's lifetime.
+
+```python
+df["lifetime_value_per_month"] = (
+    df["total_spent"] / (df["days_as_customer"] / 30)
+)
+```
+
+These ratio features provide more meaningful context than raw counts and totals.
+
+## 2. Engagement Tier
+
+Customers are grouped into low, medium, and high engagement categories using equal-width bins.
+
+```python
+df["engagement_tier"] = pd.cut(
+    df["transactions_per_month"],
+    bins=[0, 2, 10, float("inf")],
+    labels=["low", "medium", "high"]
+)
+```
+
+The resulting categories represent:
+
+* Low: 0–2 transactions per month
+* Medium: 2–10 transactions per month
+* High: More than 10 transactions per month
+
+The distribution is checked using:
+
+```python
+df["engagement_tier"].value_counts()
+```
+
+## 3. Spend Quartiles
+
+Customers are divided into four groups based on their total spending using `pd.qcut()`.
+
+```python
+df["spend_quartile"] = pd.qcut(
+    df["total_spent"],
+    q=4,
+    labels=["Q1", "Q2", "Q3", "Q4"]
+)
+```
+
+This creates approximately equal-sized groups based on the distribution of spending.
+
+## 4. RFM-Style Composite Score
+
+The pipeline creates scores for three customer dimensions:
+
+### Recency Score
+
+```python
+df["recency_score"] = pd.qcut(
+    df["days_since_last_purchase"],
+    q=5,
+    labels=[5, 4, 3, 2, 1]
+)
+```
+
+### Frequency Score
+
+```python
+df["frequency_score"] = pd.qcut(
+    df["purchase_count"],
+    q=5,
+    labels=[1, 2, 3, 4, 5]
+)
+```
+
+### Monetary Score
+
+```python
+df["monetary_score"] = pd.qcut(
+    df["total_spent"],
+    q=5,
+    labels=[1, 2, 3, 4, 5]
+)
+```
+
+### Combined RFM Score
+
+```python
+df["rfm_score"] = (
+    df["recency_score"].astype(int)
+    + df["frequency_score"].astype(int)
+    + df["monetary_score"].astype(int)
+)
+```
+
+The composite score combines recency, frequency, and monetary behavior into a single customer metric.
+
+## 5. Feature Validation
+
+The generated features are validated to ensure that the results are sensible.
+
+### Engagement Distribution
+
+```python
+print(df["engagement_tier"].value_counts())
+```
+
+### RFM Score Range
+
+```python
+print(
+    f"RFM score range: "
+    f"{df['rfm_score'].min()}-{df['rfm_score'].max()}"
+)
+```
+
+### Missing Values
+
+```python
+print(
+    df[
+        ["engagement_tier", "spend_quartile", "rfm_score"]
+    ].isna().sum()
+)
+```
+
+These checks help identify unexpected ranges or missing values introduced during feature engineering.
+
+## `pd.cut` vs `pd.qcut`
+
+`pd.cut()` creates bins using fixed value ranges. It is useful when business-defined thresholds are important.
+
+`pd.qcut()` creates bins based on quantiles, producing groups based on the distribution of the data.
+
+## Business Meaning
+
+The engineered features can support:
+
+* Customer segmentation
+* Engagement analysis
+* Spending analysis
+* Customer health assessment
+* Predictive modeling
+* Business decision-making
+
+## Data Leakage
+
+Feature engineering should use only information that would have been available at the time the prediction or analysis is made.
+
+Future transaction information should not be used to construct historical features, as this can introduce data leakage and produce misleading model results.
+
+## Workflow
+
+```text
+Raw Customer Data
+        ↓
+Calculate Ratio Features
+        ↓
+Create Engagement Tiers
+        ↓
+Create Spend Quartiles
+        ↓
+Calculate RFM Scores
+        ↓
+Validate Features
+        ↓
+Generate Processed Dataset
+        ↓
+Generate Validation Report
+```
+
+## Output Files
+
+```text
+data/processed/engineered_features.csv
+output/feature_validation_report.json
+```
+
+### `engineered_features.csv`
+
+Contains the original customer transaction data along with the newly engineered business features.
+
+### `feature_validation_report.json`
+
+Contains validation information for the generated features, including distributions, score ranges, and missing-value checks.
+
+## Conclusion
+
+The feature engineering pipeline converts raw transaction data into meaningful business features. Ratio features provide context, tiered features support customer segmentation, and the RFM-style composite score combines multiple customer behavior indicators into a single interpretable metric.
+
+```
+```
