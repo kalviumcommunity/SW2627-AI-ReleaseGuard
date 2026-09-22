@@ -1,0 +1,684 @@
+{
+    "tables": {
+        "agg_daily_release_risk": {
+            "row_count": 105,
+            "column_count": 11,
+            "columns": [
+                {
+                    "id": 0,
+                    "name": "aggregation_date",
+                    "type": "TEXT",
+                    "notnull": 1
+                },
+                {
+                    "id": 1,
+                    "name": "service",
+                    "type": "TEXT",
+                    "notnull": 1
+                },
+                {
+                    "id": 2,
+                    "name": "environment",
+                    "type": "TEXT",
+                    "notnull": 1
+                },
+                {
+                    "id": 3,
+                    "name": "total_deployments",
+                    "type": "INTEGER",
+                    "notnull": 1
+                },
+                {
+                    "id": 4,
+                    "name": "stable_count",
+                    "type": "INTEGER",
+                    "notnull": 1
+                },
+                {
+                    "id": 5,
+                    "name": "alert_count",
+                    "type": "INTEGER",
+                    "notnull": 1
+                },
+                {
+                    "id": 6,
+                    "name": "rollback_count",
+                    "type": "INTEGER",
+                    "notnull": 1
+                },
+                {
+                    "id": 7,
+                    "name": "instability_rate_pct",
+                    "type": "REAL",
+                    "notnull": 1
+                },
+                {
+                    "id": 8,
+                    "name": "mean_mttr_hours",
+                    "type": "REAL",
+                    "notnull": 0
+                },
+                {
+                    "id": 9,
+                    "name": "row_count",
+                    "type": "INTEGER",
+                    "notnull": 1
+                },
+                {
+                    "id": 10,
+                    "name": "updated_at",
+                    "type": "TEXT",
+                    "notnull": 1
+                }
+            ]
+        },
+        "deployment_outcomes": {
+            "row_count": 120,
+            "column_count": 28,
+            "columns": [
+                {
+                    "id": 0,
+                    "name": "deployment_id",
+                    "type": "TEXT",
+                    "notnull": 0
+                },
+                {
+                    "id": 1,
+                    "name": "pipeline_id",
+                    "type": "TEXT",
+                    "notnull": 0
+                },
+                {
+                    "id": 2,
+                    "name": "service",
+                    "type": "TEXT",
+                    "notnull": 0
+                },
+                {
+                    "id": 3,
+                    "name": "environment",
+                    "type": "TEXT",
+                    "notnull": 0
+                },
+                {
+                    "id": 4,
+                    "name": "deploy_timestamp",
+                    "type": "TEXT",
+                    "notnull": 0
+                },
+                {
+                    "id": 5,
+                    "name": "deployed_by",
+                    "type": "TEXT",
+                    "notnull": 0
+                },
+                {
+                    "id": 6,
+                    "name": "status",
+                    "type": "TEXT",
+                    "notnull": 0
+                },
+                {
+                    "id": 7,
+                    "name": "commit_id",
+                    "type": "TEXT",
+                    "notnull": 0
+                },
+                {
+                    "id": 8,
+                    "name": "branch",
+                    "type": "TEXT",
+                    "notnull": 0
+                },
+                {
+                    "id": 9,
+                    "name": "outcome",
+                    "type": "TEXT",
+                    "notnull": 0
+                },
+                {
+                    "id": 10,
+                    "name": "has_rollback",
+                    "type": "INTEGER",
+                    "notnull": 0
+                },
+                {
+                    "id": 11,
+                    "name": "rollback_id",
+                    "type": "TEXT",
+                    "notnull": 0
+                },
+                {
+                    "id": 12,
+                    "name": "rollback_reason",
+                    "type": "TEXT",
+                    "notnull": 0
+                },
+                {
+                    "id": 13,
+                    "name": "matched_incident_id",
+                    "type": "TEXT",
+                    "notnull": 0
+                },
+                {
+                    "id": 14,
+                    "name": "incident_priority",
+                    "type": "TEXT",
+                    "notnull": 0
+                },
+                {
+                    "id": 15,
+                    "name": "incident_category",
+                    "type": "TEXT",
+                    "notnull": 0
+                },
+                {
+                    "id": 16,
+                    "name": "incident_opened_at",
+                    "type": "TEXT",
+                    "notnull": 0
+                },
+                {
+                    "id": 17,
+                    "name": "incident_resolved_at",
+                    "type": "TEXT",
+                    "notnull": 0
+                },
+                {
+                    "id": 18,
+                    "name": "time_to_resolution_hours",
+                    "type": "REAL",
+                    "notnull": 0
+                },
+                {
+                    "id": 19,
+                    "name": "day_of_week",
+                    "type": "TEXT",
+                    "notnull": 0
+                },
+                {
+                    "id": 20,
+                    "name": "day_of_week_num",
+                    "type": "INTEGER",
+                    "notnull": 0
+                },
+                {
+                    "id": 21,
+                    "name": "deploy_hour",
+                    "type": "INTEGER",
+                    "notnull": 0
+                },
+                {
+                    "id": 22,
+                    "name": "is_weekend",
+                    "type": "INTEGER",
+                    "notnull": 0
+                },
+                {
+                    "id": 23,
+                    "name": "is_after_hours",
+                    "type": "INTEGER",
+                    "notnull": 0
+                },
+                {
+                    "id": 24,
+                    "name": "time_bucket",
+                    "type": "TEXT",
+                    "notnull": 0
+                },
+                {
+                    "id": 25,
+                    "name": "priority_bucket",
+                    "type": "TEXT",
+                    "notnull": 0
+                },
+                {
+                    "id": 26,
+                    "name": "is_instability",
+                    "type": "INTEGER",
+                    "notnull": 0
+                },
+                {
+                    "id": 27,
+                    "name": "risk_score_weight",
+                    "type": "INTEGER",
+                    "notnull": 0
+                }
+            ]
+        },
+        "incidents": {
+            "row_count": 231,
+            "column_count": 10,
+            "columns": [
+                {
+                    "id": 0,
+                    "name": "incident_id",
+                    "type": "TEXT",
+                    "notnull": 0
+                },
+                {
+                    "id": 1,
+                    "name": "opened_at",
+                    "type": "TEXT",
+                    "notnull": 0
+                },
+                {
+                    "id": 2,
+                    "name": "resolved_at",
+                    "type": "TEXT",
+                    "notnull": 0
+                },
+                {
+                    "id": 3,
+                    "name": "closed_at",
+                    "type": "TEXT",
+                    "notnull": 0
+                },
+                {
+                    "id": 4,
+                    "name": "priority",
+                    "type": "TEXT",
+                    "notnull": 0
+                },
+                {
+                    "id": 5,
+                    "name": "category",
+                    "type": "TEXT",
+                    "notnull": 0
+                },
+                {
+                    "id": 6,
+                    "name": "reassignment_count",
+                    "type": "INTEGER",
+                    "notnull": 0
+                },
+                {
+                    "id": 7,
+                    "name": "reopen_count",
+                    "type": "INTEGER",
+                    "notnull": 0
+                },
+                {
+                    "id": 8,
+                    "name": "assignment_group",
+                    "type": "TEXT",
+                    "notnull": 0
+                },
+                {
+                    "id": 9,
+                    "name": "sys_updated_at",
+                    "type": "TEXT",
+                    "notnull": 0
+                }
+            ]
+        },
+        "pipeline_logs": {
+            "row_count": 120,
+            "column_count": 9,
+            "columns": [
+                {
+                    "id": 0,
+                    "name": "deployment_id",
+                    "type": "TEXT",
+                    "notnull": 0
+                },
+                {
+                    "id": 1,
+                    "name": "pipeline_id",
+                    "type": "TEXT",
+                    "notnull": 0
+                },
+                {
+                    "id": 2,
+                    "name": "service",
+                    "type": "TEXT",
+                    "notnull": 0
+                },
+                {
+                    "id": 3,
+                    "name": "deploy_timestamp",
+                    "type": "TEXT",
+                    "notnull": 0
+                },
+                {
+                    "id": 4,
+                    "name": "deployed_by",
+                    "type": "TEXT",
+                    "notnull": 0
+                },
+                {
+                    "id": 5,
+                    "name": "environment",
+                    "type": "TEXT",
+                    "notnull": 0
+                },
+                {
+                    "id": 6,
+                    "name": "status",
+                    "type": "TEXT",
+                    "notnull": 0
+                },
+                {
+                    "id": 7,
+                    "name": "commit_id",
+                    "type": "TEXT",
+                    "notnull": 0
+                },
+                {
+                    "id": 8,
+                    "name": "branch",
+                    "type": "TEXT",
+                    "notnull": 0
+                }
+            ]
+        },
+        "rollbacks": {
+            "row_count": 14,
+            "column_count": 6,
+            "columns": [
+                {
+                    "id": 0,
+                    "name": "rollback_id",
+                    "type": "TEXT",
+                    "notnull": 0
+                },
+                {
+                    "id": 1,
+                    "name": "deployment_id",
+                    "type": "TEXT",
+                    "notnull": 0
+                },
+                {
+                    "id": 2,
+                    "name": "rollback_timestamp",
+                    "type": "TEXT",
+                    "notnull": 0
+                },
+                {
+                    "id": 3,
+                    "name": "reason",
+                    "type": "TEXT",
+                    "notnull": 0
+                },
+                {
+                    "id": 4,
+                    "name": "initiated_by",
+                    "type": "TEXT",
+                    "notnull": 0
+                },
+                {
+                    "id": 5,
+                    "name": "modeled_assumption_note",
+                    "type": "TEXT",
+                    "notnull": 0
+                }
+            ]
+        }
+    },
+    "views": {
+        "vw_active_deployments": {
+            "row_count": 120,
+            "column_count": 24,
+            "columns": [
+                {
+                    "id": 0,
+                    "name": "deployment_id",
+                    "type": "TEXT",
+                    "notnull": 0
+                },
+                {
+                    "id": 1,
+                    "name": "pipeline_id",
+                    "type": "TEXT",
+                    "notnull": 0
+                },
+                {
+                    "id": 2,
+                    "name": "service",
+                    "type": "TEXT",
+                    "notnull": 0
+                },
+                {
+                    "id": 3,
+                    "name": "environment",
+                    "type": "TEXT",
+                    "notnull": 0
+                },
+                {
+                    "id": 4,
+                    "name": "commit_id",
+                    "type": "TEXT",
+                    "notnull": 0
+                },
+                {
+                    "id": 5,
+                    "name": "branch",
+                    "type": "TEXT",
+                    "notnull": 0
+                },
+                {
+                    "id": 6,
+                    "name": "deployed_by",
+                    "type": "TEXT",
+                    "notnull": 0
+                },
+                {
+                    "id": 7,
+                    "name": "deploy_timestamp",
+                    "type": "TEXT",
+                    "notnull": 0
+                },
+                {
+                    "id": 8,
+                    "name": "day_of_week",
+                    "type": "TEXT",
+                    "notnull": 0
+                },
+                {
+                    "id": 9,
+                    "name": "deploy_hour",
+                    "type": "INTEGER",
+                    "notnull": 0
+                },
+                {
+                    "id": 10,
+                    "name": "is_weekend",
+                    "type": "INTEGER",
+                    "notnull": 0
+                },
+                {
+                    "id": 11,
+                    "name": "is_after_hours",
+                    "type": "INTEGER",
+                    "notnull": 0
+                },
+                {
+                    "id": 12,
+                    "name": "time_bucket",
+                    "type": "TEXT",
+                    "notnull": 0
+                },
+                {
+                    "id": 13,
+                    "name": "outcome",
+                    "type": "TEXT",
+                    "notnull": 0
+                },
+                {
+                    "id": 14,
+                    "name": "has_rollback",
+                    "type": "INTEGER",
+                    "notnull": 0
+                },
+                {
+                    "id": 15,
+                    "name": "has_alert",
+                    "type": "",
+                    "notnull": 0
+                },
+                {
+                    "id": 16,
+                    "name": "is_instability",
+                    "type": "INTEGER",
+                    "notnull": 0
+                },
+                {
+                    "id": 17,
+                    "name": "risk_score_weight",
+                    "type": "INTEGER",
+                    "notnull": 0
+                },
+                {
+                    "id": 18,
+                    "name": "matched_incident_id",
+                    "type": "TEXT",
+                    "notnull": 0
+                },
+                {
+                    "id": 19,
+                    "name": "incident_priority",
+                    "type": "TEXT",
+                    "notnull": 0
+                },
+                {
+                    "id": 20,
+                    "name": "incident_category",
+                    "type": "TEXT",
+                    "notnull": 0
+                },
+                {
+                    "id": 21,
+                    "name": "priority_bucket",
+                    "type": "TEXT",
+                    "notnull": 0
+                },
+                {
+                    "id": 22,
+                    "name": "time_to_resolution_hours",
+                    "type": "REAL",
+                    "notnull": 0
+                },
+                {
+                    "id": 23,
+                    "name": "risk_severity",
+                    "type": "",
+                    "notnull": 0
+                }
+            ]
+        },
+        "vw_risk_by_environment": {
+            "row_count": 21,
+            "column_count": 10,
+            "columns": [
+                {
+                    "id": 0,
+                    "name": "service",
+                    "type": "TEXT",
+                    "notnull": 0
+                },
+                {
+                    "id": 1,
+                    "name": "environment",
+                    "type": "TEXT",
+                    "notnull": 0
+                },
+                {
+                    "id": 2,
+                    "name": "total_deployments",
+                    "type": "",
+                    "notnull": 0
+                },
+                {
+                    "id": 3,
+                    "name": "stable_deployments",
+                    "type": "",
+                    "notnull": 0
+                },
+                {
+                    "id": 4,
+                    "name": "alerted_deployments",
+                    "type": "",
+                    "notnull": 0
+                },
+                {
+                    "id": 5,
+                    "name": "rollback_deployments",
+                    "type": "",
+                    "notnull": 0
+                },
+                {
+                    "id": 6,
+                    "name": "instability_rate_pct",
+                    "type": "",
+                    "notnull": 0
+                },
+                {
+                    "id": 7,
+                    "name": "rollback_rate_pct",
+                    "type": "",
+                    "notnull": 0
+                },
+                {
+                    "id": 8,
+                    "name": "alert_rate_pct",
+                    "type": "",
+                    "notnull": 0
+                },
+                {
+                    "id": 9,
+                    "name": "mean_mttr_hours",
+                    "type": "",
+                    "notnull": 0
+                }
+            ]
+        },
+        "vw_incident_resolution_metrics": {
+            "row_count": 15,
+            "column_count": 7,
+            "columns": [
+                {
+                    "id": 0,
+                    "name": "priority_bucket",
+                    "type": "TEXT",
+                    "notnull": 0
+                },
+                {
+                    "id": 1,
+                    "name": "incident_category",
+                    "type": "TEXT",
+                    "notnull": 0
+                },
+                {
+                    "id": 2,
+                    "name": "incident_count",
+                    "type": "",
+                    "notnull": 0
+                },
+                {
+                    "id": 3,
+                    "name": "avg_ttr_hours",
+                    "type": "",
+                    "notnull": 0
+                },
+                {
+                    "id": 4,
+                    "name": "min_ttr_hours",
+                    "type": "",
+                    "notnull": 0
+                },
+                {
+                    "id": 5,
+                    "name": "max_ttr_hours",
+                    "type": "",
+                    "notnull": 0
+                },
+                {
+                    "id": 6,
+                    "name": "avg_risk_weight",
+                    "type": "",
+                    "notnull": 0
+                }
+            ]
+        }
+    }
+}

@@ -27,13 +27,13 @@ Get up and running from zero to interactive dashboard in 4 simple commands:
 git clone https://github.com/kalviumcommunity/SW2627-AI-ReleaseGuard.git && cd SW2627-AI-ReleaseGuard
 
 # 2. Set up virtual environment and install dependencies
-python -m venv venv && .\venv\Scripts\activate && pip install -r requirements.txt
+python -m venv venv && source venv/Scripts/activate && python -m pip install --upgrade pip && python -m pip install -r requirements.txt
 
 # 3. Run end-to-end data pipeline (ingestion -> derivation -> cleaning -> joins -> SQLite KPIs)
 python scripts/run_pipeline.py
 
 # 4. Launch the Streamlit Release Risk Dashboard
-streamlit run scripts/app.py
+python -m streamlit run scripts/app.py
 ```
 ---
 

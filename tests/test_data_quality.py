@@ -7,13 +7,18 @@ Validates critical integrity constraints on data/processed/deployment_outcomes.c
 3. Valid domain outcome categories: {'stable', 'alerted', 'rolled_back'}
 4. Zero null values in primary operational columns (service, deploy_timestamp, environment)
 5. Timestamp temporal validity and ranges
+6. Clean Data Layer SQL views (vw_active_deployments, vw_risk_by_environment) & agg_daily_release_risk
+7. Machine-readable Data Dictionary completeness
 """
 
 import os
+import sqlite3
 import pytest
 import pandas as pd
 
 PROCESSED_FILE = os.path.join("data", "processed", "deployment_outcomes.csv")
+DB_PATH = os.path.join("data", "release_risk.db")
+DATA_DICT_CSV = os.path.join("docs", "data_dictionary.csv")
 
 @pytest.fixture(scope="module")
 def df_outcomes():
@@ -76,3 +81,34 @@ def test_valid_temporal_features(df_outcomes):
         assert df_outcomes["deploy_hour"].between(0, 23).all(), "deploy_hour must be between 0 and 23"
     if "is_weekend" in df_outcomes.columns:
         assert set(df_outcomes["is_weekend"].unique()).issubset({0, 1}), "is_weekend must be binary (0 or 1)"
+
+def test_sqlite_database_views_and_aggregations():
+    """Validates that clean data layer views and pre-aggregated summary tables exist and are populated."""
+    assert os.path.exists(DB_PATH), f"Database file {DB_PATH} must exist"
+    conn = sqlite3.connect(DB_PATH)
+    
+    # Test vw_active_deployments view
+    df_active = pd.read_sql_query("SELECT * FROM vw_active_deployments;", conn)
+    assert len(df_active) > 0, "vw_active_deployments view must contain rows"
+    assert "risk_severity" in df_active.columns
+    
+    # Test vw_risk_by_environment view
+    df_env = pd.read_sql_query("SELECT * FROM vw_risk_by_environment;", conn)
+    assert len(df_env) > 0, "vw_risk_by_environment view must contain rows"
+    assert "instability_rate_pct" in df_env.columns
+
+    # Test agg_daily_release_risk table
+    df_agg = pd.read_sql_query("SELECT * FROM agg_daily_release_risk;", conn)
+    assert len(df_agg) > 0, "agg_daily_release_risk pre-aggregated summary table must contain rows"
+    assert "aggregation_date" in df_agg.columns
+    assert "updated_at" in df_agg.columns
+    
+    conn.close()
+
+def test_data_dictionary_completeness():
+    """Asserts that docs/data_dictionary.csv exists and contains required metadata fields."""
+    assert os.path.exists(DATA_DICT_CSV), f"Data dictionary file {DATA_DICT_CSV} must exist"
+    df_dict = pd.read_csv(DATA_DICT_CSV)
+    assert len(df_dict) >= 15, "Data dictionary must contain entries for all key fields"
+    required_cols = {"table_name", "column_name", "data_type", "description", "business_meaning"}
+    assert required_cols.issubset(set(df_dict.columns)), f"Data dictionary missing columns: {required_cols - set(df_dict.columns)}"
