@@ -1,0 +1,207 @@
+````md
+# Distribution Analysis for Business Trends
+
+## Overview
+
+This project analyzes the distribution of revenue data to understand its statistical characteristics and business meaning. The pipeline uses histograms, KDE, skewness, kurtosis, percentiles, and segment comparisons.
+
+## Problem
+
+Averages can be misleading when revenue is highly skewed. A small number of high-value customers can pull the mean upward while most customers have much lower revenue.
+
+Distribution analysis helps identify:
+
+- Skewed distributions
+- Extreme values
+- Potential outliers
+- Hidden customer segments
+- Differences between high-value and low-value customers
+
+## 1. Distribution Visualization
+
+### Histogram
+
+A histogram divides revenue into buckets and shows the number of observations in each range.
+
+```python
+plt.hist(df["revenue"], bins=50, edgecolor="black")
+````
+
+### KDE
+
+A Kernel Density Estimate provides a smoothed representation of the revenue distribution.
+
+```python
+df["revenue"].plot(kind="density")
+```
+
+Both visualizations are saved to:
+
+```text
+output/revenue_distribution.png
+```
+
+## 2. Skewness and Kurtosis
+
+The pipeline calculates skewness and kurtosis using SciPy.
+
+```python
+from scipy import stats
+
+skewness = stats.skew(df["revenue"])
+kurtosis = stats.kurtosis(df["revenue"])
+```
+
+### Skewness
+
+Skewness measures the asymmetry of a distribution.
+
+* Skewness close to 0 indicates a more symmetric distribution.
+* Positive skewness indicates a longer right tail.
+* Negative skewness indicates a longer left tail.
+* Absolute skewness greater than 1 is treated as highly skewed in this analysis.
+
+For highly skewed revenue data, the median can be more representative than the mean.
+
+### Kurtosis
+
+Kurtosis provides information about the tails of a distribution.
+
+A kurtosis value greater than 3 is treated as an indication of heavy tails and potential extreme values in this assignment.
+
+## 3. Abnormal Pattern Analysis
+
+The revenue distribution is examined using descriptive statistics and percentiles.
+
+```python
+percentiles = df["revenue"].quantile(
+    [0.25, 0.5, 0.75, 0.9, 0.95, 0.99]
+)
+```
+
+Important values include:
+
+* 25th percentile
+* Median
+* 75th percentile
+* 90th percentile
+* 95th percentile
+* 99th percentile
+
+Large gaps between percentile groups can indicate different customer segments or unusual concentration of revenue.
+
+## 4. Segment Comparison
+
+Customers are divided into high-value and low-value groups.
+
+```python
+high_value = df[
+    df["revenue"] > df["revenue"].quantile(0.75)
+]
+
+low_value = df[
+    df["revenue"] < df["revenue"].quantile(0.25)
+]
+```
+
+The distributions and summary statistics of both groups are compared.
+
+```python
+print(
+    f"High-value: mean={high_value['revenue'].mean():.0f}, "
+    f"median={high_value['revenue'].median():.0f}"
+)
+
+print(
+    f"Low-value: mean={low_value['revenue'].mean():.0f}, "
+    f"median={low_value['revenue'].median():.0f}"
+)
+```
+
+This comparison helps identify differences between customer segments.
+
+## 5. Business Interpretation
+
+The analysis connects statistical results with business meaning.
+
+For highly right-skewed revenue:
+
+* Most customers may contribute relatively smaller amounts.
+* A small number of customers may contribute very large amounts.
+* The median can provide a better description of the typical customer.
+* Customer segmentation can help support different business strategies.
+
+The interpretation should be based on the actual calculated statistics rather than assumptions.
+
+## 6. Validation
+
+The analysis checks:
+
+* Mean revenue
+* Median revenue
+* Minimum revenue
+* Maximum revenue
+* Skewness
+* Kurtosis
+* Revenue percentiles
+* High-value segment statistics
+* Low-value segment statistics
+
+These metrics are stored in:
+
+```text
+output/distribution_analysis.json
+```
+
+## Workflow
+
+```text
+Raw Revenue Data
+        ↓
+Revenue Distribution
+        ↓
+Histogram + KDE
+        ↓
+Skewness + Kurtosis
+        ↓
+Percentile Analysis
+        ↓
+Identify Abnormal Patterns
+        ↓
+High vs Low Value Comparison
+        ↓
+Business Interpretation
+        ↓
+Validation Report
+```
+
+## Output Files
+
+```text
+output/revenue_distribution.png
+output/distribution_analysis.json
+```
+
+### `revenue_distribution.png`
+
+Contains the histogram and KDE visualization of revenue.
+
+### `distribution_analysis.json`
+
+Contains the calculated distribution statistics and business interpretation metrics.
+
+## Key Benefits
+
+* Makes revenue distribution patterns visible
+* Identifies skewness and heavy tails
+* Helps determine when median may be more useful than mean
+* Highlights potential customer segments
+* Supports data-driven business interpretation
+* Provides reusable statistical analysis
+
+## Conclusion
+
+Distribution analysis connects statistical patterns with business meaning. By combining visualization, skewness, kurtosis, percentile analysis, and segment comparison, the pipeline provides a clearer understanding of revenue behavior before making business decisions or applying further analysis.
+
+```
+```
