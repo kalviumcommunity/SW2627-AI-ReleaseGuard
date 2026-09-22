@@ -1,0 +1,287 @@
+# Anomaly Detection & Risk Identification
+
+## Overview
+
+This module implements anomaly detection techniques to identify unusual business metric behaviour and potential risk events.
+
+The analysis combines:
+
+* Threshold-based anomaly detection
+* Statistical z-score analysis
+* Rolling 30-day statistics
+* Severity classification
+* Persistent anomaly audit logging
+* Anomaly visualization
+
+The objective is to identify unusual metric values in a structured and auditable way.
+
+---
+
+## Objectives
+
+1. Detect anomalies using predefined business thresholds.
+2. Identify statistically unusual values using z-scores.
+3. Compare current values against rolling historical behaviour.
+4. Assign severity levels to detected anomalies.
+5. Maintain a persistent audit log.
+6. Visualize normal behaviour, expected ranges, and anomalies.
+
+---
+
+## Project Structure
+
+```text
+SW2627-AI-ReleaseGuard/
+│
+├── data/
+│   └── raw/
+│       └── customer_behavior.csv
+│
+├── scripts/
+│   └── anomaly_detection.py
+│
+├── output/
+│   ├── anomalies_log.csv
+│   ├── anomaly_detection.png
+│   └── anomaly_analysis.json
+│
+└── docs/
+    └── anomaly-detection-risk.md
+```
+
+---
+
+## 1. Threshold-Based Anomaly Detection
+
+Business metrics are evaluated against predefined minimum and maximum thresholds.
+
+For each metric:
+
+```text
+Current Value < Minimum Threshold
+OR
+Current Value > Maximum Threshold
+```
+
+an anomaly alert is generated.
+
+Each alert contains:
+
+* Metric name
+* Observed value
+* Threshold value
+* Alert status
+
+Example:
+
+```text
+Metric: Payment Success Rate
+Value: 82%
+Expected Minimum: 95%
+Status: ALERT
+```
+
+This approach provides simple and interpretable business-rule-based detection.
+
+---
+
+## 2. Statistical Anomaly Detection
+
+Statistical detection uses a rolling historical window to identify values that significantly deviate from normal behaviour.
+
+A **30-day lookback window** is used.
+
+### Rolling Mean
+
+```text
+Rolling Mean = Mean of previous 30 days
+```
+
+### Rolling Standard Deviation
+
+```text
+Rolling Std = Standard deviation of previous 30 days
+```
+
+### Z-Score
+
+```text
+z = (value - rolling_mean) / rolling_std
+```
+
+Values with:
+
+```text
+|z| > 2
+```
+
+are treated as statistical anomalies.
+
+The z-score is retained in the output to make each statistical alert interpretable.
+
+---
+
+## 3. Severity Classification
+
+Detected anomalies are assigned severity based on the absolute z-score.
+
+| Condition | Severity |        |          |
+| --------- | -------- | ------ | -------- |
+| `         | z        | > 3`   | CRITICAL |
+| `         | z        | > 2`   | HIGH     |
+| `         | z        | > 1.5` | MEDIUM   |
+| Otherwise | LOW      |        |          |
+
+For investigation purposes, **HIGH** and **CRITICAL** anomalies can be filtered separately.
+
+---
+
+## 4. Anomaly Audit Log
+
+All detected anomalies are stored in a persistent CSV audit log:
+
+```text
+output/anomalies_log.csv
+```
+
+The log records:
+
+| Field     | Description              |
+| --------- | ------------------------ |
+| timestamp | Time/date of anomaly     |
+| metric    | Business metric affected |
+| value     | Observed value           |
+| severity  | Assigned severity        |
+| status    | Investigation status     |
+
+Supported statuses:
+
+```text
+OPEN
+INVESTIGATED
+RESOLVED
+```
+
+The audit log provides traceability for detected anomalies and their investigation lifecycle.
+
+---
+
+## 5. Visualization
+
+The anomaly detection visualization contains:
+
+* Raw daily metric values
+* Rolling average
+* Expected range
+* Detected anomalies
+
+The expected range is calculated using:
+
+```text
+Lower Bound = Rolling Mean - 2 × Rolling Std
+Upper Bound = Rolling Mean + 2 × Rolling Std
+```
+
+Detected anomalies are highlighted separately so that unusual behaviour can be visually inspected.
+
+The final visualization is saved as:
+
+```text
+output/anomaly_detection.png
+```
+
+---
+
+## 6. Analysis Output
+
+The analysis produces:
+
+### `anomalies_log.csv`
+
+Persistent record of detected anomalies and their investigation status.
+
+### `anomaly_detection.png`
+
+High-quality visualization of metric behaviour, rolling statistics, expected ranges, and anomalies.
+
+### `anomaly_analysis.json`
+
+Structured summary of anomaly detection results and analysis information.
+
+---
+
+## Detection Workflow
+
+```text
+Load Dataset
+      ↓
+Validate / Prepare Dates
+      ↓
+Select Business Metrics
+      ↓
+Apply Threshold Rules
+      ↓
+Calculate 30-Day Rolling Mean & Std
+      ↓
+Calculate Z-Scores
+      ↓
+Detect Statistical Anomalies
+      ↓
+Assign Severity
+      ↓
+Create Audit Log
+      ↓
+Generate Visualization
+      ↓
+Save Outputs
+```
+
+---
+
+## Validation
+
+The implementation should verify:
+
+* Required data is available.
+* Date values are correctly processed.
+* Business metrics contain usable numeric values.
+* Rolling statistics are calculated correctly.
+* Z-scores are generated correctly.
+* Anomalies are identified when thresholds are exceeded.
+* Severity levels follow the defined rules.
+* Audit log contains the required fields.
+* Visualization is successfully generated.
+
+---
+
+## Business Interpretation
+
+Threshold-based detection identifies violations of predefined business expectations, while statistical detection identifies behaviour that is unusual relative to recent historical patterns.
+
+The results are intended to support investigation and risk analysis rather than automatically make operational decisions.
+
+---
+
+## Limitations
+
+* Thresholds depend on predefined business rules.
+* Statistical detection depends on the quality and availability of historical data.
+* A z-score does not establish the cause of an anomaly.
+* Detected anomalies require human investigation.
+* The system is not intended for real-time monitoring or automated remediation.
+
+---
+
+## Deliverables
+
+* `scripts/anomaly_detection.py`
+* `output/anomalies_log.csv`
+* `output/anomaly_detection.png`
+* `output/anomaly_analysis.json`
+* `docs/anomaly-detection-risk.md`
+
+---
+
+## Conclusion
+
+This module provides a reproducible approach to anomaly detection using business thresholds and rolling statistical analysis. It combines automated detection, severity classification, auditability, and visualization to help engineering teams identify and investigate unusual metric behaviour.
