@@ -1,0 +1,20 @@
+{
+    "execution_timestamp": "2026-09-22T05:01:10.375127+00:00Z",
+    "total_deployments": 120,
+    "outcome_distribution": {
+        "stable": 89,
+        "rolled_back": 18,
+        "alerted": 13
+    },
+    "deployments_with_rollbacks": 14,
+    "deployments_with_incidents": 30,
+    "total_incidents_analyzed": 231,
+    "incidents_matched_to_deployments": 30,
+    "orphaned_incidents_count": 201,
+    "orphaned_incidents_ratio_pct": 87.01,
+    "join_matching_logic": {
+        "temporal_window_hours": 2.0,
+        "semantic_matching": "Service-to-Category Dictionary + Substring Mapping",
+        "conflict_resolution": "Highest Incident Priority Selection"
+    }
+}

@@ -1,0 +1,186 @@
+{
+    "temporal_kpi_sample": [
+        {
+            "day_of_week": "Wednesday",
+            "deploy_hour": 21,
+            "total_deployments": 1,
+            "rollback_count": 1,
+            "alert_count": 0,
+            "rollback_rate_pct": 100.0,
+            "alert_rate_pct": 0.0,
+            "instability_rate_pct": 100.0
+        },
+        {
+            "day_of_week": "Wednesday",
+            "deploy_hour": 16,
+            "total_deployments": 1,
+            "rollback_count": 0,
+            "alert_count": 1,
+            "rollback_rate_pct": 0.0,
+            "alert_rate_pct": 100.0,
+            "instability_rate_pct": 100.0
+        },
+        {
+            "day_of_week": "Wednesday",
+            "deploy_hour": 15,
+            "total_deployments": 1,
+            "rollback_count": 1,
+            "alert_count": 0,
+            "rollback_rate_pct": 100.0,
+            "alert_rate_pct": 0.0,
+            "instability_rate_pct": 100.0
+        },
+        {
+            "day_of_week": "Wednesday",
+            "deploy_hour": 13,
+            "total_deployments": 1,
+            "rollback_count": 1,
+            "alert_count": 0,
+            "rollback_rate_pct": 100.0,
+            "alert_rate_pct": 0.0,
+            "instability_rate_pct": 100.0
+        },
+        {
+            "day_of_week": "Wednesday",
+            "deploy_hour": 3,
+            "total_deployments": 1,
+            "rollback_count": 1,
+            "alert_count": 0,
+            "rollback_rate_pct": 100.0,
+            "alert_rate_pct": 0.0,
+            "instability_rate_pct": 100.0
+        },
+        {
+            "day_of_week": "Tuesday",
+            "deploy_hour": 22,
+            "total_deployments": 1,
+            "rollback_count": 1,
+            "alert_count": 0,
+            "rollback_rate_pct": 100.0,
+            "alert_rate_pct": 0.0,
+            "instability_rate_pct": 100.0
+        },
+        {
+            "day_of_week": "Tuesday",
+            "deploy_hour": 4,
+            "total_deployments": 1,
+            "rollback_count": 1,
+            "alert_count": 0,
+            "rollback_rate_pct": 100.0,
+            "alert_rate_pct": 0.0,
+            "instability_rate_pct": 100.0
+        },
+        {
+            "day_of_week": "Thursday",
+            "deploy_hour": 5,
+            "total_deployments": 1,
+            "rollback_count": 1,
+            "alert_count": 0,
+            "rollback_rate_pct": 100.0,
+            "alert_rate_pct": 0.0,
+            "instability_rate_pct": 100.0
+        },
+        {
+            "day_of_week": "Sunday",
+            "deploy_hour": 22,
+            "total_deployments": 1,
+            "rollback_count": 1,
+            "alert_count": 0,
+            "rollback_rate_pct": 100.0,
+            "alert_rate_pct": 0.0,
+            "instability_rate_pct": 100.0
+        },
+        {
+            "day_of_week": "Sunday",
+            "deploy_hour": 20,
+            "total_deployments": 1,
+            "rollback_count": 1,
+            "alert_count": 0,
+            "rollback_rate_pct": 100.0,
+            "alert_rate_pct": 0.0,
+            "instability_rate_pct": 100.0
+        }
+    ],
+    "mttr_by_priority": [
+        {
+            "priority_bucket": "Critical (P1)",
+            "incident_count": 16,
+            "mean_ttr_hours": 6.71,
+            "min_ttr_hours": 2.39,
+            "max_ttr_hours": 10.14
+        },
+        {
+            "priority_bucket": "Low (P4)",
+            "incident_count": 8,
+            "mean_ttr_hours": 4.05,
+            "min_ttr_hours": 2.14,
+            "max_ttr_hours": 5.96
+        },
+        {
+            "priority_bucket": "High (P2)",
+            "incident_count": 3,
+            "mean_ttr_hours": 3.9,
+            "min_ttr_hours": 2.33,
+            "max_ttr_hours": 5.88
+        },
+        {
+            "priority_bucket": "Moderate (P3)",
+            "incident_count": 3,
+            "mean_ttr_hours": 3.81,
+            "min_ttr_hours": 2.1,
+            "max_ttr_hours": 5.31
+        }
+    ],
+    "top_5_risk_conditions": [
+        {
+            "service": "inventory-db-migrator",
+            "environment": "production",
+            "day_of_week": "Sunday",
+            "time_bucket": "Morning (06:00-12:00)",
+            "total_deployments": 2,
+            "unstable_deployments": 2,
+            "instability_rate_pct": 100.0,
+            "total_rollbacks": 1
+        },
+        {
+            "service": "notification-worker",
+            "environment": "production",
+            "day_of_week": "Saturday",
+            "time_bucket": "Afternoon (12:00-18:00)",
+            "total_deployments": 2,
+            "unstable_deployments": 2,
+            "instability_rate_pct": 100.0,
+            "total_rollbacks": 1
+        },
+        {
+            "service": "notification-worker",
+            "environment": "production",
+            "day_of_week": "Saturday",
+            "time_bucket": "Morning (06:00-12:00)",
+            "total_deployments": 2,
+            "unstable_deployments": 2,
+            "instability_rate_pct": 100.0,
+            "total_rollbacks": 1
+        },
+        {
+            "service": "cart-service",
+            "environment": "production",
+            "day_of_week": "Thursday",
+            "time_bucket": "Night (00:00-06:00)",
+            "total_deployments": 1,
+            "unstable_deployments": 1,
+            "instability_rate_pct": 100.0,
+            "total_rollbacks": 1
+        },
+        {
+            "service": "notification-worker",
+            "environment": "production",
+            "day_of_week": "Saturday",
+            "time_bucket": "Evening (18:00-24:00)",
+            "total_deployments": 1,
+            "unstable_deployments": 1,
+            "instability_rate_pct": 100.0,
+            "total_rollbacks": 1
+        }
+    ]
+}

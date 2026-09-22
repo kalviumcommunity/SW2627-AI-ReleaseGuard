@@ -1,0 +1,100 @@
+{
+    "execution_timestamp": "2026-09-22T05:01:09.469621Z",
+    "status": "SUCCESS",
+    "datasets": {
+        "incident_log.csv": {
+            "file_path": "data/raw\\incident_log.csv",
+            "file_size_bytes": 35511,
+            "encoding_used": "utf-8",
+            "schema_validation": {
+                "is_valid": true,
+                "expected_columns": [
+                    "incident_id",
+                    "opened_at",
+                    "resolved_at",
+                    "closed_at",
+                    "priority",
+                    "category",
+                    "reassignment_count",
+                    "reopen_count",
+                    "assignment_group"
+                ],
+                "present_columns": [
+                    "incident_id",
+                    "opened_at",
+                    "resolved_at",
+                    "closed_at",
+                    "priority",
+                    "category",
+                    "reassignment_count",
+                    "reopen_count",
+                    "assignment_group",
+                    "sys_updated_at"
+                ],
+                "missing_columns": [],
+                "extra_columns": [
+                    "sys_updated_at"
+                ],
+                "null_counts": {
+                    "incident_id": 0,
+                    "opened_at": 0,
+                    "resolved_at": 0,
+                    "closed_at": 0,
+                    "priority": 0,
+                    "category": 0,
+                    "reassignment_count": 0,
+                    "reopen_count": 0,
+                    "assignment_group": 0,
+                    "sys_updated_at": 0
+                },
+                "total_rows": 250,
+                "total_columns": 10
+            }
+        },
+        "pipeline_logs.csv": {
+            "file_path": "data/raw\\pipeline_logs.csv",
+            "file_size_bytes": 73401,
+            "encoding_used": "utf-8",
+            "schema_validation": {
+                "is_valid": true,
+                "expected_columns": [
+                    "pipeline_id",
+                    "stage_name",
+                    "job_name",
+                    "status",
+                    "timestamp",
+                    "commit_id",
+                    "branch",
+                    "user",
+                    "environment"
+                ],
+                "present_columns": [
+                    "pipeline_id",
+                    "stage_name",
+                    "job_name",
+                    "status",
+                    "timestamp",
+                    "commit_id",
+                    "branch",
+                    "user",
+                    "environment"
+                ],
+                "missing_columns": [],
+                "extra_columns": [],
+                "null_counts": {
+                    "pipeline_id": 0,
+                    "stage_name": 0,
+                    "job_name": 0,
+                    "status": 0,
+                    "timestamp": 0,
+                    "commit_id": 0,
+                    "branch": 0,
+                    "user": 0,
+                    "environment": 0
+                },
+                "total_rows": 600,
+                "total_columns": 9
+            }
+        }
+    }
+}
