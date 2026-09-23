@@ -1,0 +1,407 @@
+## Overview
+
+This document covers SQL query optimization techniques for analytical workloads.
+
+The main optimization patterns covered are:
+
+- Avoiding `SELECT *`
+- Filtering data before joins
+- Using CTEs to structure complex queries
+- Measuring query performance
+- Validating queries at realistic data volumes
+
+These techniques help reduce unnecessary data processing, memory usage, and query execution time.
+
+---
+
+## 1. Avoid SELECT *
+
+Using `SELECT *` retrieves every column from a table even when only a few columns are required.
+
+### Inefficient Query
+
+```sql
+SELECT *
+FROM transactions t
+JOIN customers c
+    ON t.customer_id = c.id
+WHERE t.year = 2024;
+````
+
+This retrieves all columns from both tables.
+
+### Optimized Query
+
+```sql
+SELECT
+    t.transaction_id,
+    t.customer_id,
+    t.amount,
+    c.customer_name,
+    c.country
+FROM transactions t
+JOIN customers c
+    ON t.customer_id = c.id
+WHERE t.year = 2024;
+```
+
+### Benefits
+
+Explicit column selection:
+
+* Reduces unnecessary data transfer
+* Reduces memory usage
+* Makes query intent clear
+* Avoids accidentally retrieving large columns
+* Reduces dependency on future schema changes
+
+---
+
+## 2. Early Filtering Before JOIN
+
+Filtering data before joining can reduce the amount of data processed by the join.
+
+### Inefficient Approach
+
+```sql
+SELECT
+    t.transaction_id,
+    t.amount,
+    c.customer_name
+FROM transactions t
+JOIN customers c
+    ON t.customer_id = c.id
+WHERE t.transaction_year = 2024;
+```
+
+The filtering condition is applied to the transaction data after the join operation in the logical query structure.
+
+### Optimized Approach
+
+```sql
+SELECT
+    t.transaction_id,
+    t.amount,
+    c.customer_name
+FROM (
+    SELECT
+        transaction_id,
+        customer_id,
+        amount
+    FROM transactions
+    WHERE transaction_year = 2024
+) t
+JOIN customers c
+    ON t.customer_id = c.id;
+```
+
+### Benefits
+
+The optimized approach reduces the number of transaction rows before the join.
+
+For example:
+
+```text
+Original transactions: 100,000,000
+Transactions after filter: 10,000,000
+```
+
+Joining the smaller filtered dataset can reduce intermediate data and memory requirements.
+
+---
+
+## 3. CTEs for Complex Queries
+
+A Common Table Expression (CTE) provides a named temporary result that can be used by a query.
+
+CTEs make complex SQL easier to read, test, and maintain.
+
+### CTE Example
+
+```sql
+WITH recent_transactions AS (
+    SELECT
+        customer_id,
+        amount,
+        transaction_date
+    FROM transactions
+    WHERE transaction_date >= CURRENT_DATE - INTERVAL '90 days'
+),
+
+customer_summary AS (
+    SELECT
+        customer_id,
+        COUNT(*) AS transaction_count,
+        SUM(amount) AS total_spent
+    FROM recent_transactions
+    GROUP BY customer_id
+)
+
+SELECT
+    cs.customer_id,
+    cs.transaction_count,
+    cs.total_spent
+FROM customer_summary cs
+WHERE cs.total_spent > 10000;
+```
+
+### CTE Structure
+
+```text
+recent_transactions
+        |
+        v
+customer_summary
+        |
+        v
+final result
+```
+
+Each CTE represents a separate logical step.
+
+### Benefits
+
+* Improves readability
+* Separates complex logic
+* Makes intermediate steps easier to test
+* Makes the query easier to maintain
+* Clearly communicates query intent
+
+---
+
+## 4. Query Performance Measurement
+
+Query optimization should be measured rather than assumed.
+
+Example performance measurements:
+
+```text
+Before optimization: 45 seconds
+After removing SELECT *: 30 seconds
+After early filtering: 8 seconds
+After query restructuring: 2 seconds
+```
+
+These measurements demonstrate how multiple optimization techniques can reduce execution time.
+
+---
+
+## 5. EXPLAIN and EXPLAIN ANALYZE
+
+Execution plans can be used to understand how a database executes a query.
+
+### EXPLAIN
+
+```sql
+EXPLAIN
+SELECT
+    t.transaction_id,
+    t.amount,
+    c.customer_name
+FROM transactions t
+JOIN customers c
+    ON t.customer_id = c.id
+WHERE t.transaction_year = 2024;
+```
+
+### EXPLAIN ANALYZE
+
+```sql
+EXPLAIN ANALYZE
+SELECT
+    t.transaction_id,
+    t.amount,
+    c.customer_name
+FROM transactions t
+JOIN customers c
+    ON t.customer_id = c.id
+WHERE t.transaction_year = 2024;
+```
+
+`EXPLAIN` helps inspect the planned execution strategy, while `EXPLAIN ANALYZE` can provide information about actual execution.
+
+---
+
+## 6. Memory and Intermediate Results
+
+Query performance is not only about execution time.
+
+Large intermediate results can increase memory consumption.
+
+For example:
+
+```text
+Large transaction table
+        |
+        v
+Unfiltered JOIN
+        |
+        v
+Large intermediate result
+        |
+        v
+WHERE filtering
+```
+
+A better approach is:
+
+```text
+Large transaction table
+        |
+        v
+Early filtering
+        |
+        v
+Smaller dataset
+        |
+        v
+JOIN
+        |
+        v
+Smaller intermediate result
+```
+
+Reducing data volume early can improve performance and reduce memory requirements.
+
+---
+
+## 7. Testing at Realistic Data Volume
+
+A query that performs well on a small dataset may behave differently when the dataset becomes much larger.
+
+For example:
+
+```text
+1 million rows → query appears fast
+100 million rows → query may become slow
+```
+
+Therefore, optimized queries should be tested using realistic production-scale data whenever possible.
+
+---
+
+## 8. Query Optimization Checklist
+
+Before committing an analytical SQL query, verify:
+
+* [ ] No unnecessary `SELECT *`
+* [ ] Required columns are explicitly selected
+* [ ] Filters are applied as early as practical
+* [ ] JOIN conditions are correct
+* [ ] Complex logic is organized using CTEs where useful
+* [ ] Column names use clear table aliases
+* [ ] Query performance has been measured
+* [ ] `EXPLAIN` or `EXPLAIN ANALYZE` has been considered
+* [ ] Query has been tested at realistic data volume
+* [ ] Relevant indexes have been checked
+* [ ] Comments explain non-obvious logic
+
+---
+
+## 9. Performance Impact Example
+
+Consider a revenue dashboard query that initially takes 45 seconds.
+
+### Step 1: Remove SELECT *
+
+```text
+45 seconds → 30 seconds
+```
+
+Unused columns are removed from the query.
+
+### Step 2: Apply Early Filtering
+
+```text
+30 seconds → 8 seconds
+```
+
+Transactions are filtered before joining with other tables.
+
+### Step 3: Structure the Query
+
+```text
+8 seconds → 2 seconds
+```
+
+CTEs are used to organize the query into logical steps.
+
+### Overall Result
+
+```text
+Original: 45 seconds
+Optimized: 2 seconds
+```
+
+This demonstrates how several optimization techniques can work together.
+
+---
+
+## 10. Key Optimization Patterns
+
+### Pattern 1: Explicit Columns
+
+```sql
+SELECT
+    customer_id,
+    amount
+FROM transactions;
+```
+
+Instead of:
+
+```sql
+SELECT *
+FROM transactions;
+```
+
+### Pattern 2: Early Filtering
+
+```sql
+SELECT *
+FROM (
+    SELECT
+        customer_id,
+        amount
+    FROM transactions
+    WHERE transaction_year = 2024
+) filtered_transactions;
+```
+
+### Pattern 3: CTE
+
+```sql
+WITH filtered_transactions AS (
+    SELECT
+        customer_id,
+        amount
+    FROM transactions
+    WHERE transaction_year = 2024
+)
+SELECT
+    customer_id,
+    SUM(amount) AS total_amount
+FROM filtered_transactions
+GROUP BY customer_id;
+```
+
+---
+
+## Conclusion
+
+Analytical SQL queries should be written with performance, readability, and maintainability in mind.
+
+The main optimization principles demonstrated are:
+
+1. Select only the columns that are required.
+2. Filter data as early as practical.
+3. Use CTEs to structure complex query logic.
+4. Measure query execution performance.
+5. Use execution plans to understand query behavior.
+6. Monitor memory and intermediate result sizes.
+7. Test queries using realistic data volumes.
+
+Applying these patterns helps analytical queries remain efficient as data volumes increase.
+
+```
+```
