@@ -97,7 +97,7 @@ The ReleaseGuard pipeline executes sequentially through 7 modular stages:
 - **Module**: [`scripts/join_validation.py`](file:///c:/Users/Saanvi%20Garg/Desktop/SW2627-AI-ReleaseGuard/scripts/join_validation.py)
 - **Functions**:
   - Links deployments to downstream incidents if:
-    1. **Temporal Proximity**: Incident `opened_at` occurs within $[T_{\text{deploy}}, T_{\text{deploy}} + \text{2.0 hours}]$.
+    1. **Temporal Proximity**: Incident `opened_at` occurs within `[T_deploy, T_deploy + 2.0 hours]`.
     2. **Semantic Affinity**: Microservice matches ServiceNow category or assignment group via an ontology dictionary.
   - Priority Conflict Resolution: Selects highest severity incident (P1 Critical > P2 High > P3 Moderate > P4 Low).
   - Outcome Labeling: Classifies releases into `stable`, `alerted`, or `rolled_back`.
@@ -149,16 +149,16 @@ ReleaseGuard derives 16+ domain-specific features across four analytical layers:
 | **ITSM & Severity** | `time_to_resolution_hours` | `FLOAT` | Hours elapsed between incident `opened_at` and `resolved_at`. |
 | **ITSM & Severity** | `sla_breach_flag` | `INTEGER (0/1)` | Binary flag (1 if `made_sla == 'false'` or resolution > 24.0 hours). |
 | **ITSM & Severity** | `escalation_depth` | `INTEGER` | Reassignment count across engineering tier teams. |
-| **ITSM & Severity** | `reopen_risk_score` | `FLOAT` | Ticket friction score: $(2.5 \times \text{reopen\_count}) + (1.2 \times \text{reassignment\_count})$. |
+| **ITSM & Severity** | `reopen_risk_score` | `FLOAT` | Ticket friction score: `(2.5 * reopen_count) + (1.2 * reassignment_count)`. |
 | **Composite Risk** | `composite_risk_score` | `FLOAT` | Normalized 0–100 Composite Release Risk Index (see formula below). |
 
 ### 0–100 Composite Release Risk Index Formula
 The `composite_risk_score` calculates a single actionable risk index combining timing, quality, security, and severity penalties:
 
-$$\text{Composite Risk} = \text{Clip}_{0}^{100}\left( 15.0 + P_{\text{after\_hours}} + P_{\text{weekend}} + P_{\text{test}} + P_{\text{security}} + P_{\text{outcome}} + P_{\text{priority}} + P_{\text{sla}} \right)$$
+$$\text{Composite Risk} = \text{Clip}_{0}^{100}\left( 15.0 + P_{\text{after-hours}} + P_{\text{weekend}} + P_{\text{test}} + P_{\text{security}} + P_{\text{outcome}} + P_{\text{priority}} + P_{\text{sla}} \right)$$
 
 - **Baseline Risk**: $15.0$
-- **After-Hours Penalty ($P_{\text{after\_hours}}$)**: $+18.0$ if `is_after_hours == 1`
+- **After-Hours Penalty ($P_{\text{after-hours}}$)**: $+18.0$ if `is_after_hours == 1`
 - **Weekend Penalty ($P_{\text{weekend}}$)**: $+22.0$ if `is_weekend == 1`
 - **Test Pass Penalty ($P_{\text{test}}$)**: $+80 \times (0.95 - \text{test\_pass\_rate})$ if `test_pass_rate < 0.95`
 - **Security Penalty ($P_{\text{security}}$)**: $\min(\text{security\_finding\_count} \times 6.0, 24.0)$
@@ -321,11 +321,11 @@ SW2627-AI-ReleaseGuard/
 
 | KPI Name | Mathematical Formula | Related Columns | Business Purpose |
 |---|---|---|---|
-| **Instability Rate (%)** | $$\frac{\sum \text{is\_instability}}{\text{Total Deployments}} \times 100$$ | `is_instability`, `deployment_id` | Measures total percentage of degraded or failed releases. |
-| **Rollback Rate (%)** | $$\frac{\sum \text{has\_rollback}}{\text{Total Deployments}} \times 100$$ | `has_rollback`, `deployment_id` | Measures percentage of failed releases requiring physical code rollback. |
-| **Mean MTTR (Hours)** | $$\frac{1}{N} \sum (\text{resolved\_at} - \text{opened\_at})$$ | `time_to_resolution_hours`, `matched_incident_id` | Quantifies engineering response speed for incidents. |
-| **Composite Risk Score (0–100)** | Normalized score combining timing, quality, security, SLA, and severity penalties | `composite_risk_score` | Provides a single actionable risk index prior to deployment. |
-| **SLA Compliance Rate (%)** | $$\left(1 - \frac{\sum \text{sla\_breach\_flag}}{\text{Total Incidents}}\right) \times 100$$ | `sla_breach_flag` | Evaluates ITSM response contract performance. |
+| **Instability Rate (%)** | `100.0 * (SUM(is_instability) / COUNT(*))` | `is_instability`, `deployment_id` | Measures total percentage of degraded or failed releases. |
+| **Rollback Rate (%)** | `100.0 * (SUM(has_rollback) / COUNT(*))` | `has_rollback`, `deployment_id` | Measures percentage of failed releases requiring physical code rollback. |
+| **Mean MTTR (Hours)** | `AVG(time_to_resolution_hours)` | `time_to_resolution_hours`, `matched_incident_id` | Quantifies engineering response speed for incidents. |
+| **Composite Risk Score (0–100)** | `Clip(15.0 + Penalties, 0, 100)` | `composite_risk_score` | Provides a single actionable risk index prior to deployment. |
+| **SLA Compliance Rate (%)** | `100.0 * (1 - SUM(sla_breach_flag) / COUNT(*))` | `sla_breach_flag` | Evaluates ITSM response contract performance. |
 
 ---
 
