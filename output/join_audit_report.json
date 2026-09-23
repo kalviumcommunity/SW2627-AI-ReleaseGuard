@@ -1,17 +1,17 @@
 {
-    "execution_timestamp": "2026-09-22T11:37:27.196018+00:00Z",
-    "total_deployments": 120,
+    "execution_timestamp": "2026-09-23T06:00:26.136813+00:00Z",
+    "total_deployments": 250,
     "outcome_distribution": {
-        "stable": 89,
-        "rolled_back": 18,
-        "alerted": 13
+        "stable": 157,
+        "alerted": 57,
+        "rolled_back": 36
     },
-    "deployments_with_rollbacks": 14,
-    "deployments_with_incidents": 30,
-    "total_incidents_analyzed": 231,
-    "incidents_matched_to_deployments": 30,
-    "orphaned_incidents_count": 201,
-    "orphaned_incidents_ratio_pct": 87.01,
+    "deployments_with_rollbacks": 28,
+    "deployments_with_incidents": 69,
+    "total_incidents_analyzed": 450,
+    "incidents_matched_to_deployments": 67,
+    "orphaned_incidents_count": 383,
+    "orphaned_incidents_ratio_pct": 85.11,
     "join_matching_logic": {
         "temporal_window_hours": 2.0,
         "semantic_matching": "Service-to-Category Dictionary + Substring Mapping",

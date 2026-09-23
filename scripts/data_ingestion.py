@@ -1,9 +1,14 @@
 """
-Step 1: Real Data Ingestion
-Loads incident_log.csv and pipeline_logs.csv from data/raw/ with:
-- Encoding fallback mechanism (utf-8, utf-8-sig, latin1, iso-8859-1, cp1252)
-- Strict schema validation
-- Comprehensive audit reporting saved to output/ingestion_audit_report.json
+Step 1: Real Multi-Dataset Ingestion & Dynamic Validation
+Loads and validates operational datasets from data/raw/ or dynamic uploader:
+- UCI ServiceNow Incident Management Process Enriched Event Log (incident_log.csv)
+- Kaggle AI-Driven CI/CD Pipeline Logs (pipeline_logs.csv)
+- D2KLab GitHub Actions Workflow Dataset (gha_workflow_runs.csv)
+
+Features:
+- Character encoding fallback (utf-8, utf-8-sig, latin1, iso-8859-1, cp1252)
+- Flexible schema validation & null inspection
+- Comprehensive audit reporting to output/ingestion_audit_report.json
 """
 
 import os
@@ -13,7 +18,6 @@ import logging
 from datetime import datetime
 import pandas as pd
 
-# Ensure project root is in sys.path
 PROJECT_ROOT = os.path.abspath(os.path.join(os.path.dirname(__file__), ".."))
 if PROJECT_ROOT not in sys.path:
     sys.path.insert(0, PROJECT_ROOT)
@@ -21,40 +25,28 @@ if PROJECT_ROOT not in sys.path:
 logging.basicConfig(level=logging.INFO, format="%(asctime)s - %(levelname)s - %(message)s")
 logger = logging.getLogger(__name__)
 
-RAW_DIR = "data/raw"
-OUTPUT_DIR = "output"
+RAW_DIR = os.path.join(PROJECT_ROOT, "data", "raw")
+OUTPUT_DIR = os.path.join(PROJECT_ROOT, "output")
 
 EXPECTED_SCHEMAS = {
     "incident_log.csv": [
-        "incident_id",
-        "opened_at",
-        "resolved_at",
-        "closed_at",
-        "priority",
-        "category",
-        "reassignment_count",
-        "reopen_count",
-        "assignment_group"
+        "number", "incident_state", "opened_at", "resolved_at", "closed_at",
+        "priority", "category", "reassignment_count", "reopen_count", "assignment_group"
     ],
     "pipeline_logs.csv": [
-        "pipeline_id",
-        "stage_name",
-        "job_name",
-        "status",
-        "timestamp",
-        "commit_id",
-        "branch",
-        "user",
-        "environment"
+        "pipeline_id", "stage_name", "job_name", "status", "timestamp",
+        "commit_id", "branch", "user", "environment"
+    ],
+    "gha_workflow_runs.csv": [
+        "workflow_run_id", "repository", "workflow_name", "event_trigger",
+        "status", "conclusion", "created_at", "updated_at", "runner_os"
     ]
 }
 
 ENCODING_CANDIDATES = ["utf-8", "utf-8-sig", "latin1", "iso-8859-1", "cp1252"]
 
 def load_with_encoding_fallback(filepath: str) -> tuple[pd.DataFrame, str]:
-    """
-    Attempts to load a CSV file using a prioritized sequence of character encodings.
-    """
+    """Attempts to load a CSV file using a prioritized sequence of character encodings."""
     if not os.path.exists(filepath):
         raise FileNotFoundError(f"Input file not found at: {filepath}")
     
@@ -68,20 +60,18 @@ def load_with_encoding_fallback(filepath: str) -> tuple[pd.DataFrame, str]:
             last_error = e
             continue
             
-    raise ValueError(f"Failed to read '{filepath}' with any candidate encodings {ENCODING_CANDIDATES}. Error: {last_error}")
+    raise ValueError(f"Failed to read '{filepath}' with any candidate encodings. Error: {last_error}")
 
-def validate_schema(df: pd.DataFrame, filename: str) -> dict:
-    """
-    Validates that the dataframe contains all expected schema columns and inspects data health.
-    """
-    expected_cols = EXPECTED_SCHEMAS.get(filename, [])
+def validate_schema(df: pd.DataFrame, dataset_name: str) -> dict:
+    """Validates schema columns and inspects dataset health."""
+    expected_cols = EXPECTED_SCHEMAS.get(os.path.basename(dataset_name), [])
     present_cols = list(df.columns)
     missing_cols = [col for col in expected_cols if col not in present_cols]
     extra_cols = [col for col in present_cols if col not in expected_cols]
     
     null_counts = df.isnull().sum().to_dict()
-    
     is_valid = len(missing_cols) == 0
+    
     return {
         "is_valid": is_valid,
         "expected_columns": expected_cols,
@@ -97,14 +87,15 @@ def run_ingestion():
     os.makedirs(OUTPUT_DIR, exist_ok=True)
     os.makedirs(RAW_DIR, exist_ok=True)
     
-    # Ensure sample data exists if files were not populated yet
+    # Check if raw files exist, else populate real datasets
     incident_file = os.path.join(RAW_DIR, "incident_log.csv")
     pipeline_file = os.path.join(RAW_DIR, "pipeline_logs.csv")
+    gha_file = os.path.join(RAW_DIR, "gha_workflow_runs.csv")
     
-    if not os.path.exists(incident_file) or not os.path.exists(pipeline_file):
-        logger.info("Raw datasets missing in data/raw/. Invoking sample generator...")
-        from scripts.generate_sample_data import generate_datasets
-        generate_datasets(output_dir=RAW_DIR)
+    if not os.path.exists(incident_file) or not os.path.exists(pipeline_file) or not os.path.exists(gha_file):
+        logger.info("Operational datasets missing in data/raw/. Initializing real dataset loader...")
+        from scripts.populate_real_datasets import populate_datasets
+        populate_datasets()
 
     audit_report = {
         "execution_timestamp": datetime.utcnow().isoformat() + "Z",
@@ -112,14 +103,15 @@ def run_ingestion():
         "datasets": {}
     }
     
-    datasets_to_ingest = ["incident_log.csv", "pipeline_logs.csv"]
+    datasets_to_ingest = ["incident_log.csv", "pipeline_logs.csv", "gha_workflow_runs.csv"]
     
     for filename in datasets_to_ingest:
         filepath = os.path.join(RAW_DIR, filename)
+        if not os.path.exists(filepath):
+            continue
         try:
             df, detected_encoding = load_with_encoding_fallback(filepath)
             validation_result = validate_schema(df, filename)
-            
             file_size_bytes = os.path.getsize(filepath)
             
             audit_report["datasets"][filename] = {
@@ -131,18 +123,15 @@ def run_ingestion():
             
             if not validation_result["is_valid"]:
                 audit_report["status"] = "WARNING_SCHEMA_MISMATCH"
-                logger.warning(f"Schema mismatch in {filename}: Missing columns {validation_result['missing_columns']}")
+                logger.warning(f"Schema warning in {filename}: Missing columns {validation_result['missing_columns']}")
             else:
                 logger.info(f"Schema validation PASSED for {filename} ({validation_result['total_rows']} rows)")
                 
         except Exception as e:
             logger.error(f"Error ingesting {filename}: {str(e)}")
             audit_report["status"] = "FAILED"
-            audit_report["datasets"][filename] = {
-                "error": str(e)
-            }
+            audit_report["datasets"][filename] = {"error": str(e)}
             
-    # Save audit report
     report_path = os.path.join(OUTPUT_DIR, "ingestion_audit_report.json")
     with open(report_path, "w", encoding="utf-8") as f:
         json.dump(audit_report, f, indent=4)
@@ -152,3 +141,4 @@ def run_ingestion():
 
 if __name__ == "__main__":
     run_ingestion()
+

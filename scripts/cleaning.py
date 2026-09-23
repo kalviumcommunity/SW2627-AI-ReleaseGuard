@@ -112,9 +112,12 @@ def clean_deployments(df: pd.DataFrame, clean_log: CleaningLogger) -> pd.DataFra
 def clean_incidents(df: pd.DataFrame, clean_log: CleaningLogger) -> pd.DataFrame:
     logger.info(f"Cleaning incidents dataset (initial rows: {len(df)})")
     
+    if "incident_id" not in df.columns and "number" in df.columns:
+        df["incident_id"] = df["number"]
+    
     # 1. Null handling
     for idx, row in df.iterrows():
-        rec_id = row.get("incident_id", f"row_{idx}")
+        rec_id = row.get("incident_id", row.get("number", f"row_{idx}"))
         if pd.isnull(row.get("category")) or str(row.get("category")).strip() == "":
             clean_log.log("incidents", rec_id, "IMPUTE_NULL", "category", row.get("category"), "General / Unknown", "Missing incident category")
             df.at[idx, "category"] = "General / Unknown"

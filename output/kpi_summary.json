@@ -1,384 +1,446 @@
 {
     "temporal_kpi_sample": [
         {
-            "day_of_week": "Saturday",
-            "deploy_hour": 10,
-            "total_deployments": 3,
-            "rollback_count": 1,
+            "day_of_week": "Sunday",
+            "deploy_hour": 7,
+            "total_deployments": 4,
+            "rollback_count": 2,
             "alert_count": 1,
-            "rollback_rate_pct": 33.33,
+            "rollback_rate_pct": 50.0,
+            "alert_rate_pct": 25.0,
+            "instability_rate_pct": 100.0
+        },
+        {
+            "day_of_week": "Tuesday",
+            "deploy_hour": 1,
+            "total_deployments": 3,
+            "rollback_count": 0,
+            "alert_count": 3,
+            "rollback_rate_pct": 0.0,
+            "alert_rate_pct": 100.0,
+            "instability_rate_pct": 100.0
+        },
+        {
+            "day_of_week": "Monday",
+            "deploy_hour": 6,
+            "total_deployments": 3,
+            "rollback_count": 2,
+            "alert_count": 1,
+            "rollback_rate_pct": 66.67,
             "alert_rate_pct": 33.33,
-            "instability_rate_pct": 66.67
+            "instability_rate_pct": 100.0
         },
         {
             "day_of_week": "Wednesday",
             "deploy_hour": 22,
             "total_deployments": 2,
-            "rollback_count": 0,
-            "alert_count": 0,
-            "rollback_rate_pct": 0.0,
-            "alert_rate_pct": 0.0,
-            "instability_rate_pct": 50.0
-        },
-        {
-            "day_of_week": "Tuesday",
-            "deploy_hour": 17,
-            "total_deployments": 2,
             "rollback_count": 1,
-            "alert_count": 0,
+            "alert_count": 1,
             "rollback_rate_pct": 50.0,
-            "alert_rate_pct": 0.0,
-            "instability_rate_pct": 50.0
-        },
-        {
-            "day_of_week": "Tuesday",
-            "deploy_hour": 11,
-            "total_deployments": 2,
-            "rollback_count": 0,
-            "alert_count": 1,
-            "rollback_rate_pct": 0.0,
             "alert_rate_pct": 50.0,
-            "instability_rate_pct": 50.0
-        },
-        {
-            "day_of_week": "Tuesday",
-            "deploy_hour": 6,
-            "total_deployments": 2,
-            "rollback_count": 0,
-            "alert_count": 1,
-            "rollback_rate_pct": 0.0,
-            "alert_rate_pct": 50.0,
-            "instability_rate_pct": 50.0
-        },
-        {
-            "day_of_week": "Tuesday",
-            "deploy_hour": 1,
-            "total_deployments": 2,
-            "rollback_count": 0,
-            "alert_count": 1,
-            "rollback_rate_pct": 0.0,
-            "alert_rate_pct": 50.0,
-            "instability_rate_pct": 50.0
-        },
-        {
-            "day_of_week": "Thursday",
-            "deploy_hour": 13,
-            "total_deployments": 2,
-            "rollback_count": 0,
-            "alert_count": 1,
-            "rollback_rate_pct": 0.0,
-            "alert_rate_pct": 50.0,
-            "instability_rate_pct": 50.0
-        },
-        {
-            "day_of_week": "Monday",
-            "deploy_hour": 4,
-            "total_deployments": 2,
-            "rollback_count": 0,
-            "alert_count": 1,
-            "rollback_rate_pct": 0.0,
-            "alert_rate_pct": 50.0,
-            "instability_rate_pct": 50.0
+            "instability_rate_pct": 100.0
         },
         {
             "day_of_week": "Wednesday",
-            "deploy_hour": 7,
-            "total_deployments": 3,
-            "rollback_count": 1,
-            "alert_count": 0,
-            "rollback_rate_pct": 33.33,
-            "alert_rate_pct": 0.0,
-            "instability_rate_pct": 33.33
+            "deploy_hour": 15,
+            "total_deployments": 2,
+            "rollback_count": 0,
+            "alert_count": 2,
+            "rollback_rate_pct": 0.0,
+            "alert_rate_pct": 100.0,
+            "instability_rate_pct": 100.0
         },
         {
-            "day_of_week": "Saturday",
-            "deploy_hour": 20,
-            "total_deployments": 3,
+            "day_of_week": "Tuesday",
+            "deploy_hour": 19,
+            "total_deployments": 2,
             "rollback_count": 1,
-            "alert_count": 0,
-            "rollback_rate_pct": 33.33,
-            "alert_rate_pct": 0.0,
-            "instability_rate_pct": 33.33
+            "alert_count": 1,
+            "rollback_rate_pct": 50.0,
+            "alert_rate_pct": 50.0,
+            "instability_rate_pct": 100.0
+        },
+        {
+            "day_of_week": "Tuesday",
+            "deploy_hour": 14,
+            "total_deployments": 2,
+            "rollback_count": 1,
+            "alert_count": 1,
+            "rollback_rate_pct": 50.0,
+            "alert_rate_pct": 50.0,
+            "instability_rate_pct": 100.0
+        },
+        {
+            "day_of_week": "Thursday",
+            "deploy_hour": 18,
+            "total_deployments": 2,
+            "rollback_count": 1,
+            "alert_count": 1,
+            "rollback_rate_pct": 50.0,
+            "alert_rate_pct": 50.0,
+            "instability_rate_pct": 100.0
+        },
+        {
+            "day_of_week": "Friday",
+            "deploy_hour": 23,
+            "total_deployments": 2,
+            "rollback_count": 1,
+            "alert_count": 1,
+            "rollback_rate_pct": 50.0,
+            "alert_rate_pct": 50.0,
+            "instability_rate_pct": 100.0
+        },
+        {
+            "day_of_week": "Friday",
+            "deploy_hour": 12,
+            "total_deployments": 2,
+            "rollback_count": 0,
+            "alert_count": 2,
+            "rollback_rate_pct": 0.0,
+            "alert_rate_pct": 100.0,
+            "instability_rate_pct": 100.0
         }
     ],
     "environment_kpi": [
         {
             "service": "inventory-db-migrator",
-            "environment": "production",
-            "total_deployments": 9,
-            "instability_rate_pct": 66.67,
-            "rollback_rate_pct": 33.33,
-            "mean_mttr_hours": 4.71
-        },
-        {
-            "service": "notification-worker",
-            "environment": "production",
-            "total_deployments": 15,
-            "instability_rate_pct": 66.67,
-            "rollback_rate_pct": 40.0,
-            "mean_mttr_hours": 5.37
-        },
-        {
-            "service": "cart-servicee",
-            "environment": "development",
-            "total_deployments": 2,
-            "instability_rate_pct": 50.0,
-            "rollback_rate_pct": 0.0,
-            "mean_mttr_hours": 4.27
-        },
-        {
-            "service": "web-frontend",
             "environment": "staging",
-            "total_deployments": 2,
-            "instability_rate_pct": 50.0,
+            "total_deployments": 6,
+            "instability_rate_pct": 66.67,
             "rollback_rate_pct": 0.0,
-            "mean_mttr_hours": 5.88
+            "mean_mttr_hours": 0.0
         },
         {
-            "service": "web-frontend",
-            "environment": "production",
-            "total_deployments": 11,
-            "instability_rate_pct": 45.45,
-            "rollback_rate_pct": 18.18,
-            "mean_mttr_hours": 6.08
+            "service": "user-profile",
+            "environment": "staging",
+            "total_deployments": 3,
+            "instability_rate_pct": 66.67,
+            "rollback_rate_pct": 0.0,
+            "mean_mttr_hours": 0.0
         },
         {
             "service": "inventory-db-migrator",
-            "environment": "staging",
-            "total_deployments": 3,
-            "instability_rate_pct": 33.33,
-            "rollback_rate_pct": 0.0,
-            "mean_mttr_hours": 5.38
+            "environment": "production",
+            "total_deployments": 22,
+            "instability_rate_pct": 59.09,
+            "rollback_rate_pct": 18.18,
+            "mean_mttr_hours": 0.0
         },
         {
             "service": "user-profile",
             "environment": "production",
-            "total_deployments": 9,
-            "instability_rate_pct": 22.22,
-            "rollback_rate_pct": 11.11,
-            "mean_mttr_hours": 4.09
+            "total_deployments": 24,
+            "instability_rate_pct": 50.0,
+            "rollback_rate_pct": 16.67,
+            "mean_mttr_hours": 0.0
+        },
+        {
+            "service": "auth-service",
+            "environment": "production",
+            "total_deployments": 27,
+            "instability_rate_pct": 48.15,
+            "rollback_rate_pct": 25.93,
+            "mean_mttr_hours": 0.0
+        },
+        {
+            "service": "notification-worker",
+            "environment": "production",
+            "total_deployments": 29,
+            "instability_rate_pct": 41.38,
+            "rollback_rate_pct": 20.69,
+            "mean_mttr_hours": 0.0
         },
         {
             "service": "payment-api",
             "environment": "production",
-            "total_deployments": 10,
-            "instability_rate_pct": 20.0,
-            "rollback_rate_pct": 10.0,
-            "mean_mttr_hours": 6.14
-        },
-        {
-            "service": "payment-apie",
-            "environment": "development",
-            "total_deployments": 5,
-            "instability_rate_pct": 20.0,
-            "rollback_rate_pct": 0.0,
-            "mean_mttr_hours": 5.96
-        },
-        {
-            "service": "cart-service",
-            "environment": "production",
-            "total_deployments": 15,
-            "instability_rate_pct": 13.33,
-            "rollback_rate_pct": 6.67,
-            "mean_mttr_hours": 6.61
-        },
-        {
-            "service": "auth-service",
-            "environment": "production",
-            "total_deployments": 6,
-            "instability_rate_pct": 0.0,
-            "rollback_rate_pct": 0.0,
-            "mean_mttr_hours": NaN
+            "total_deployments": 23,
+            "instability_rate_pct": 39.13,
+            "rollback_rate_pct": 8.7,
+            "mean_mttr_hours": 0.0
         },
         {
             "service": "auth-service",
             "environment": "staging",
-            "total_deployments": 1,
-            "instability_rate_pct": 0.0,
+            "total_deployments": 8,
+            "instability_rate_pct": 37.5,
             "rollback_rate_pct": 0.0,
-            "mean_mttr_hours": NaN
+            "mean_mttr_hours": 0.0
+        },
+        {
+            "service": "cart-service",
+            "environment": "staging",
+            "total_deployments": 3,
+            "instability_rate_pct": 33.33,
+            "rollback_rate_pct": 0.0,
+            "mean_mttr_hours": 0.0
+        },
+        {
+            "service": "payment-api",
+            "environment": "staging",
+            "total_deployments": 3,
+            "instability_rate_pct": 33.33,
+            "rollback_rate_pct": 0.0,
+            "mean_mttr_hours": 0.0
+        },
+        {
+            "service": "user-profilee",
+            "environment": "development",
+            "total_deployments": 9,
+            "instability_rate_pct": 33.33,
+            "rollback_rate_pct": 0.0,
+            "mean_mttr_hours": 0.0
+        },
+        {
+            "service": "web-frontend",
+            "environment": "production",
+            "total_deployments": 28,
+            "instability_rate_pct": 32.14,
+            "rollback_rate_pct": 7.14,
+            "mean_mttr_hours": 0.0
+        },
+        {
+            "service": "cart-service",
+            "environment": "production",
+            "total_deployments": 23,
+            "instability_rate_pct": 30.43,
+            "rollback_rate_pct": 13.04,
+            "mean_mttr_hours": 0.0
         },
         {
             "service": "auth-servicee",
             "environment": "development",
             "total_deployments": 4,
-            "instability_rate_pct": 0.0,
+            "instability_rate_pct": 25.0,
             "rollback_rate_pct": 0.0,
-            "mean_mttr_hours": NaN
+            "mean_mttr_hours": 0.0
         },
         {
-            "service": "cart-service",
+            "service": "web-frontend",
             "environment": "staging",
             "total_deployments": 4,
-            "instability_rate_pct": 0.0,
+            "instability_rate_pct": 25.0,
             "rollback_rate_pct": 0.0,
-            "mean_mttr_hours": NaN
+            "mean_mttr_hours": 0.0
+        },
+        {
+            "service": "cart-servicee",
+            "environment": "development",
+            "total_deployments": 5,
+            "instability_rate_pct": 20.0,
+            "rollback_rate_pct": 0.0,
+            "mean_mttr_hours": 0.0
         },
         {
             "service": "inventory-db-migratore",
             "environment": "development",
-            "total_deployments": 8,
-            "instability_rate_pct": 0.0,
+            "total_deployments": 9,
+            "instability_rate_pct": 11.11,
             "rollback_rate_pct": 0.0,
-            "mean_mttr_hours": NaN
+            "mean_mttr_hours": 0.0
         },
         {
             "service": "notification-worker",
             "environment": "staging",
-            "total_deployments": 4,
+            "total_deployments": 3,
             "instability_rate_pct": 0.0,
             "rollback_rate_pct": 0.0,
-            "mean_mttr_hours": NaN
+            "mean_mttr_hours": 0.0
         },
         {
             "service": "notification-workere",
             "environment": "development",
-            "total_deployments": 2,
+            "total_deployments": 7,
             "instability_rate_pct": 0.0,
             "rollback_rate_pct": 0.0,
-            "mean_mttr_hours": NaN
+            "mean_mttr_hours": 0.0
         },
         {
-            "service": "payment-api",
-            "environment": "staging",
-            "total_deployments": 3,
-            "instability_rate_pct": 0.0,
-            "rollback_rate_pct": 0.0,
-            "mean_mttr_hours": NaN
-        },
-        {
-            "service": "user-profile",
-            "environment": "staging",
-            "total_deployments": 1,
-            "instability_rate_pct": 0.0,
-            "rollback_rate_pct": 0.0,
-            "mean_mttr_hours": NaN
-        },
-        {
-            "service": "user-profilee",
+            "service": "payment-apie",
             "environment": "development",
-            "total_deployments": 5,
+            "total_deployments": 6,
             "instability_rate_pct": 0.0,
             "rollback_rate_pct": 0.0,
-            "mean_mttr_hours": NaN
+            "mean_mttr_hours": 0.0
         },
         {
             "service": "web-frontende",
             "environment": "development",
-            "total_deployments": 1,
+            "total_deployments": 4,
             "instability_rate_pct": 0.0,
             "rollback_rate_pct": 0.0,
-            "mean_mttr_hours": NaN
+            "mean_mttr_hours": 0.0
         }
     ],
     "mttr_by_priority": [
         {
             "priority_bucket": "Critical (P1)",
             "incident_category": "Application / Checkout",
-            "incident_count": 1,
-            "avg_ttr_hours": 9.71,
-            "avg_risk_weight": 2.0
-        },
-        {
-            "priority_bucket": "Critical (P1)",
-            "incident_category": "User Interface",
-            "incident_count": 3,
-            "avg_ttr_hours": 7.03,
-            "avg_risk_weight": 2.0
-        },
-        {
-            "priority_bucket": "Critical (P1)",
-            "incident_category": "Messaging / Queue",
-            "incident_count": 6,
-            "avg_ttr_hours": 6.55,
-            "avg_risk_weight": 2.0
+            "incident_count": 5,
+            "avg_ttr_hours": 0.0,
+            "avg_risk_weight": 1.0
         },
         {
             "priority_bucket": "Critical (P1)",
             "incident_category": "Database / Migration",
             "incident_count": 3,
-            "avg_ttr_hours": 6.36,
-            "avg_risk_weight": 2.0
+            "avg_ttr_hours": 0.0,
+            "avg_risk_weight": 1.33
         },
         {
             "priority_bucket": "Critical (P1)",
+            "incident_category": "Database / UserData",
+            "incident_count": 1,
+            "avg_ttr_hours": 0.0,
+            "avg_risk_weight": 1.0
+        },
+        {
+            "priority_bucket": "Critical (P1)",
+            "incident_category": "Messaging / Queue",
+            "incident_count": 1,
+            "avg_ttr_hours": 0.0,
+            "avg_risk_weight": 1.0
+        },
+        {
+            "priority_bucket": "Critical (P1)",
+            "incident_category": "User Interface",
+            "incident_count": 2,
+            "avg_ttr_hours": 0.0,
+            "avg_risk_weight": 1.5
+        },
+        {
+            "priority_bucket": "High (P2)",
+            "incident_category": "Application / Checkout",
+            "incident_count": 19,
+            "avg_ttr_hours": 0.0,
+            "avg_risk_weight": 1.21
+        },
+        {
+            "priority_bucket": "High (P2)",
+            "incident_category": "Database / Migration",
+            "incident_count": 2,
+            "avg_ttr_hours": 0.0,
+            "avg_risk_weight": 1.0
+        },
+        {
+            "priority_bucket": "High (P2)",
+            "incident_category": "Database / UserData",
+            "incident_count": 1,
+            "avg_ttr_hours": 0.0,
+            "avg_risk_weight": 1.0
+        },
+        {
+            "priority_bucket": "High (P2)",
             "incident_category": "Finance / Transactions",
-            "incident_count": 2,
-            "avg_ttr_hours": 6.14,
-            "avg_risk_weight": 2.0
-        },
-        {
-            "priority_bucket": "High (P2)",
-            "incident_category": "Application / Checkout",
-            "incident_count": 1,
-            "avg_ttr_hours": 5.88,
+            "incident_count": 3,
+            "avg_ttr_hours": 0.0,
             "avg_risk_weight": 1.0
         },
         {
-            "priority_bucket": "Critical (P1)",
-            "incident_category": "Database / UserData",
+            "priority_bucket": "High (P2)",
+            "incident_category": "Security / Access",
+            "incident_count": 2,
+            "avg_ttr_hours": 0.0,
+            "avg_risk_weight": 1.5
+        },
+        {
+            "priority_bucket": "High (P2)",
+            "incident_category": "User Interface",
             "incident_count": 1,
-            "avg_ttr_hours": 5.85,
-            "avg_risk_weight": 2.0
+            "avg_ttr_hours": 0.0,
+            "avg_risk_weight": 1.0
         },
         {
             "priority_bucket": "Low (P4)",
-            "incident_category": "Messaging / Queue",
+            "incident_category": "Application / Checkout",
+            "incident_count": 2,
+            "avg_ttr_hours": 0.0,
+            "avg_risk_weight": 1.0
+        },
+        {
+            "priority_bucket": "Low (P4)",
+            "incident_category": "Database / Migration",
             "incident_count": 1,
-            "avg_ttr_hours": 4.78,
+            "avg_ttr_hours": 0.0,
+            "avg_risk_weight": 1.0
+        },
+        {
+            "priority_bucket": "Low (P4)",
+            "incident_category": "Database / UserData",
+            "incident_count": 1,
+            "avg_ttr_hours": 0.0,
+            "avg_risk_weight": 1.0
+        },
+        {
+            "priority_bucket": "Low (P4)",
+            "incident_category": "User Interface",
+            "incident_count": 1,
+            "avg_ttr_hours": 0.0,
+            "avg_risk_weight": 2.0
+        },
+        {
+            "priority_bucket": "Moderate (P3)",
+            "incident_category": "Application / Checkout",
+            "incident_count": 17,
+            "avg_ttr_hours": 0.0,
+            "avg_risk_weight": 1.12
+        },
+        {
+            "priority_bucket": "Moderate (P3)",
+            "incident_category": "Database / Migration",
+            "incident_count": 3,
+            "avg_ttr_hours": 0.0,
+            "avg_risk_weight": 1.67
+        },
+        {
+            "priority_bucket": "Moderate (P3)",
+            "incident_category": "Database / UserData",
+            "incident_count": 1,
+            "avg_ttr_hours": 0.0,
+            "avg_risk_weight": 1.0
+        },
+        {
+            "priority_bucket": "Moderate (P3)",
+            "incident_category": "Security / Access",
+            "incident_count": 2,
+            "avg_ttr_hours": 0.0,
             "avg_risk_weight": 1.0
         },
         {
             "priority_bucket": "Moderate (P3)",
             "incident_category": "User Interface",
-            "incident_count": 2,
-            "avg_ttr_hours": 4.66,
-            "avg_risk_weight": 1.0
-        },
-        {
-            "priority_bucket": "Low (P4)",
-            "incident_category": "Application / Checkout",
-            "incident_count": 4,
-            "avg_ttr_hours": 4.44,
-            "avg_risk_weight": 1.25
-        },
-        {
-            "priority_bucket": "Low (P4)",
-            "incident_category": "Database / Migration",
-            "incident_count": 2,
-            "avg_ttr_hours": 3.84,
-            "avg_risk_weight": 1.0
-        },
-        {
-            "priority_bucket": "High (P2)",
-            "incident_category": "Messaging / Queue",
             "incident_count": 1,
-            "avg_ttr_hours": 3.48,
-            "avg_risk_weight": 1.0
-        },
-        {
-            "priority_bucket": "High (P2)",
-            "incident_category": "Database / UserData",
-            "incident_count": 1,
-            "avg_ttr_hours": 2.33,
-            "avg_risk_weight": 1.0
-        },
-        {
-            "priority_bucket": "Low (P4)",
-            "incident_category": "Database / UserData",
-            "incident_count": 1,
-            "avg_ttr_hours": 2.14,
-            "avg_risk_weight": 1.0
-        },
-        {
-            "priority_bucket": "Moderate (P3)",
-            "incident_category": "Messaging / Queue",
-            "incident_count": 1,
-            "avg_ttr_hours": 2.1,
+            "avg_ttr_hours": 0.0,
             "avg_risk_weight": 1.0
         }
     ],
     "daily_pre_aggregated_sample": [
+        {
+            "aggregation_date": "2026-08-27",
+            "service": "user-profile",
+            "environment": "production",
+            "total_deployments": 2,
+            "instability_rate_pct": 50.0,
+            "mean_mttr_hours": 0.0,
+            "updated_at": "2026-09-23 06:00:26"
+        },
+        {
+            "aggregation_date": "2026-08-27",
+            "service": "web-frontend",
+            "environment": "production",
+            "total_deployments": 1,
+            "instability_rate_pct": 0.0,
+            "mean_mttr_hours": 0.0,
+            "updated_at": "2026-09-23 06:00:26"
+        },
+        {
+            "aggregation_date": "2026-08-27",
+            "service": "payment-api",
+            "environment": "production",
+            "total_deployments": 1,
+            "instability_rate_pct": 0.0,
+            "mean_mttr_hours": 0.0,
+            "updated_at": "2026-09-23 06:00:26"
+        },
         {
             "aggregation_date": "2026-08-27",
             "service": "notification-workere",
@@ -386,7 +448,7 @@
             "total_deployments": 1,
             "instability_rate_pct": 0.0,
             "mean_mttr_hours": NaN,
-            "updated_at": "2026-09-22 11:37:27"
+            "updated_at": "2026-09-23 05:42:39"
         },
         {
             "aggregation_date": "2026-08-27",
@@ -395,7 +457,34 @@
             "total_deployments": 1,
             "instability_rate_pct": 0.0,
             "mean_mttr_hours": NaN,
-            "updated_at": "2026-09-22 11:37:27"
+            "updated_at": "2026-09-23 05:42:39"
+        },
+        {
+            "aggregation_date": "2026-08-27",
+            "service": "inventory-db-migrator",
+            "environment": "production",
+            "total_deployments": 1,
+            "instability_rate_pct": 0.0,
+            "mean_mttr_hours": 0.0,
+            "updated_at": "2026-09-23 06:00:26"
+        },
+        {
+            "aggregation_date": "2026-08-27",
+            "service": "cart-service",
+            "environment": "production",
+            "total_deployments": 1,
+            "instability_rate_pct": 0.0,
+            "mean_mttr_hours": 0.0,
+            "updated_at": "2026-09-23 06:00:26"
+        },
+        {
+            "aggregation_date": "2026-08-27",
+            "service": "auth-service",
+            "environment": "staging",
+            "total_deployments": 2,
+            "instability_rate_pct": 0.0,
+            "mean_mttr_hours": 0.0,
+            "updated_at": "2026-09-23 06:00:26"
         },
         {
             "aggregation_date": "2026-08-27",
@@ -404,70 +493,16 @@
             "total_deployments": 1,
             "instability_rate_pct": 0.0,
             "mean_mttr_hours": NaN,
-            "updated_at": "2026-09-22 11:37:27"
-        },
-        {
-            "aggregation_date": "2026-08-26",
-            "service": "payment-apie",
-            "environment": "development",
-            "total_deployments": 1,
-            "instability_rate_pct": 100.0,
-            "mean_mttr_hours": 5.96,
-            "updated_at": "2026-09-22 11:37:27"
+            "updated_at": "2026-09-23 05:42:39"
         },
         {
             "aggregation_date": "2026-08-26",
             "service": "user-profile",
             "environment": "production",
-            "total_deployments": 2,
-            "instability_rate_pct": 0.0,
-            "mean_mttr_hours": NaN,
-            "updated_at": "2026-09-22 11:37:27"
-        },
-        {
-            "aggregation_date": "2026-08-26",
-            "service": "inventory-db-migratore",
-            "environment": "development",
-            "total_deployments": 1,
-            "instability_rate_pct": 0.0,
-            "mean_mttr_hours": NaN,
-            "updated_at": "2026-09-22 11:37:27"
-        },
-        {
-            "aggregation_date": "2026-08-26",
-            "service": "inventory-db-migrator",
-            "environment": "staging",
-            "total_deployments": 1,
-            "instability_rate_pct": 0.0,
-            "mean_mttr_hours": NaN,
-            "updated_at": "2026-09-22 11:37:27"
-        },
-        {
-            "aggregation_date": "2026-08-26",
-            "service": "cart-service",
-            "environment": "production",
-            "total_deployments": 1,
-            "instability_rate_pct": 0.0,
-            "mean_mttr_hours": NaN,
-            "updated_at": "2026-09-22 11:37:27"
-        },
-        {
-            "aggregation_date": "2026-08-25",
-            "service": "notification-worker",
-            "environment": "production",
             "total_deployments": 1,
             "instability_rate_pct": 100.0,
-            "mean_mttr_hours": 3.48,
-            "updated_at": "2026-09-22 11:37:27"
-        },
-        {
-            "aggregation_date": "2026-08-25",
-            "service": "notification-worker",
-            "environment": "staging",
-            "total_deployments": 1,
-            "instability_rate_pct": 0.0,
-            "mean_mttr_hours": NaN,
-            "updated_at": "2026-09-22 11:37:27"
+            "mean_mttr_hours": 0.0,
+            "updated_at": "2026-09-23 06:00:26"
         }
     ]
 }

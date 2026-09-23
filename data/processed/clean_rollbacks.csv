@@ -1,15 +1,29 @@
 rollback_id,deployment_id,rollback_timestamp,reason,initiated_by,modeled_assumption_note
-RBK-8001,DEP-PIPE-1001-001,2026-08-01 12:34:00,SecurityScanAlert_PostDeploy (Critical CVE in dynamic bundle),Automated_SRE_Rollback_Daemon,Synthetic rollback event generated for degraded deployment telemetry
-RBK-8002,DEP-PIPE-1003-003,2026-08-01 21:05:00,SecurityScanAlert_PostDeploy (Critical CVE in dynamic bundle),OnCall_SRE_Lead,Synthetic rollback event generated for degraded deployment telemetry
-RBK-8003,DEP-PIPE-1015-015,2026-08-04 18:19:00,MemoryLeakDetected (Container OOMKilled),Automated_SRE_Rollback_Daemon,Synthetic rollback event generated for degraded deployment telemetry
-RBK-8004,DEP-PIPE-1019-019,2026-08-05 13:59:00,DatabaseDeadlockOnMigration (Schema lock timeout),OnCall_SRE_Lead,Synthetic rollback event generated for degraded deployment telemetry
-RBK-8005,DEP-PIPE-1021-021,2026-08-05 22:30:00,MemoryLeakDetected (Container OOMKilled),Automated_SRE_Rollback_Daemon,Synthetic rollback event generated for degraded deployment telemetry
-RBK-8006,DEP-PIPE-1032-032,2026-08-08 11:02:00,ElevatedErrorRate_5xx (Error budget breached > 2.5%),OnCall_SRE_Lead,Synthetic rollback event generated for degraded deployment telemetry
-RBK-8007,DEP-PIPE-1038-038,2026-08-09 22:47:00,ElevatedErrorRate_5xx (Error budget breached > 2.5%),OnCall_SRE_Lead,Synthetic rollback event generated for degraded deployment telemetry
-RBK-8008,DEP-PIPE-1043-043,2026-08-11 04:50:00,MemoryLeakDetected (Container OOMKilled),Automated_SRE_Rollback_Daemon,Synthetic rollback event generated for degraded deployment telemetry
-RBK-8009,DEP-PIPE-1051-051,2026-08-12 15:15:00,SecurityScanAlert_PostDeploy (Critical CVE in dynamic bundle),Automated_SRE_Rollback_Daemon,Synthetic rollback event generated for degraded deployment telemetry
-RBK-8010,DEP-PIPE-1054-054,2026-08-13 06:16:00,HealthCheckFailed (HTTP 503 Service Unavailable on /healthz),Automated_SRE_Rollback_Daemon,Synthetic rollback event generated for degraded deployment telemetry
-RBK-8011,DEP-PIPE-1080-080,2026-08-18 23:02:00,DatabaseDeadlockOnMigration (Schema lock timeout),Automated_SRE_Rollback_Daemon,Synthetic rollback event generated for degraded deployment telemetry
-RBK-8012,DEP-PIPE-1083-083,2026-08-19 08:05:00,LatencySLA_Exceeded (p99 latency spiked > 2500ms),OnCall_SRE_Lead,Synthetic rollback event generated for degraded deployment telemetry
-RBK-8013,DEP-PIPE-1101-101,2026-08-23 08:29:00,SecurityScanAlert_PostDeploy (Critical CVE in dynamic bundle),OnCall_SRE_Lead,Synthetic rollback event generated for degraded deployment telemetry
-RBK-8014,DEP-PIPE-1103-103,2026-08-23 20:37:00,ElevatedErrorRate_5xx (Error budget breached > 2.5%),OnCall_SRE_Lead,Synthetic rollback event generated for degraded deployment telemetry
+RBK-8001,DEP-PIPE-1010-010,2026-08-02 07:48:34,SecurityScanAlert_PostDeploy (Critical CVE in dynamic bundle),Automated_SRE_Rollback_Daemon,Synthetic rollback event generated for degraded deployment telemetry
+RBK-8002,DEP-PIPE-1025-025,2026-08-03 23:01:46,SecurityScanAlert_PostDeploy (Critical CVE in dynamic bundle),OnCall_SRE_Lead,Synthetic rollback event generated for degraded deployment telemetry
+RBK-8003,DEP-PIPE-1031-031,2026-08-04 14:42:48,MemoryLeakDetected (Container OOMKilled),Automated_SRE_Rollback_Daemon,Synthetic rollback event generated for degraded deployment telemetry
+RBK-8004,DEP-PIPE-1034-034,2026-08-05 00:21:16,DatabaseDeadlockOnMigration (Schema lock timeout),OnCall_SRE_Lead,Synthetic rollback event generated for degraded deployment telemetry
+RBK-8005,DEP-PIPE-1043-043,2026-08-05 22:41:42,MemoryLeakDetected (Container OOMKilled),Automated_SRE_Rollback_Daemon,Synthetic rollback event generated for degraded deployment telemetry
+RBK-8006,DEP-PIPE-1044-044,2026-08-06 01:59:37,ElevatedErrorRate_5xx (Error budget breached > 2.5%),OnCall_SRE_Lead,Synthetic rollback event generated for degraded deployment telemetry
+RBK-8007,DEP-PIPE-1047-047,2026-08-06 09:05:39,ElevatedErrorRate_5xx (Error budget breached > 2.5%),OnCall_SRE_Lead,Synthetic rollback event generated for degraded deployment telemetry
+RBK-8008,DEP-PIPE-1054-054,2026-08-07 03:18:56,MemoryLeakDetected (Container OOMKilled),Automated_SRE_Rollback_Daemon,Synthetic rollback event generated for degraded deployment telemetry
+RBK-8009,DEP-PIPE-1062-062,2026-08-07 23:19:05,SecurityScanAlert_PostDeploy (Critical CVE in dynamic bundle),Automated_SRE_Rollback_Daemon,Synthetic rollback event generated for degraded deployment telemetry
+RBK-8010,DEP-PIPE-1065-065,2026-08-08 08:37:48,HealthCheckFailed (HTTP 503 Service Unavailable on /healthz),Automated_SRE_Rollback_Daemon,Synthetic rollback event generated for degraded deployment telemetry
+RBK-8011,DEP-PIPE-1068-068,2026-08-08 15:52:11,DatabaseDeadlockOnMigration (Schema lock timeout),Automated_SRE_Rollback_Daemon,Synthetic rollback event generated for degraded deployment telemetry
+RBK-8012,DEP-PIPE-1074-074,2026-08-09 06:15:19,LatencySLA_Exceeded (p99 latency spiked > 2500ms),OnCall_SRE_Lead,Synthetic rollback event generated for degraded deployment telemetry
+RBK-8013,DEP-PIPE-1100-100,2026-08-12 03:33:51,SecurityScanAlert_PostDeploy (Critical CVE in dynamic bundle),OnCall_SRE_Lead,Synthetic rollback event generated for degraded deployment telemetry
+RBK-8014,DEP-PIPE-1101-101,2026-08-12 05:41:37,ElevatedErrorRate_5xx (Error budget breached > 2.5%),OnCall_SRE_Lead,Synthetic rollback event generated for degraded deployment telemetry
+RBK-8015,DEP-PIPE-1142-142,2026-08-16 08:07:09,DatabaseDeadlockOnMigration (Schema lock timeout),OnCall_SRE_Lead,Synthetic rollback event generated for degraded deployment telemetry
+RBK-8016,DEP-PIPE-1143-143,2026-08-16 11:22:01,ElevatedErrorRate_5xx (Error budget breached > 2.5%),Automated_SRE_Rollback_Daemon,Synthetic rollback event generated for degraded deployment telemetry
+RBK-8017,DEP-PIPE-1146-146,2026-08-16 20:39:11,SecurityScanAlert_PostDeploy (Critical CVE in dynamic bundle),Automated_SRE_Rollback_Daemon,Synthetic rollback event generated for degraded deployment telemetry
+RBK-8018,DEP-PIPE-1150-150,2026-08-17 06:55:53,ElevatedErrorRate_5xx (Error budget breached > 2.5%),OnCall_SRE_Lead,Synthetic rollback event generated for degraded deployment telemetry
+RBK-8019,DEP-PIPE-1168-168,2026-08-18 23:51:51,ElevatedErrorRate_5xx (Error budget breached > 2.5%),OnCall_SRE_Lead,Synthetic rollback event generated for degraded deployment telemetry
+RBK-8020,DEP-PIPE-1170-170,2026-08-19 04:42:57,ElevatedErrorRate_5xx (Error budget breached > 2.5%),OnCall_SRE_Lead,Synthetic rollback event generated for degraded deployment telemetry
+RBK-8021,DEP-PIPE-1178-178,2026-08-20 02:02:46,ElevatedErrorRate_5xx (Error budget breached > 2.5%),Automated_SRE_Rollback_Daemon,Synthetic rollback event generated for degraded deployment telemetry
+RBK-8022,DEP-PIPE-1185-185,2026-08-20 19:37:51,DatabaseDeadlockOnMigration (Schema lock timeout),Automated_SRE_Rollback_Daemon,Synthetic rollback event generated for degraded deployment telemetry
+RBK-8023,DEP-PIPE-1207-207,2026-08-23 02:59:29,MemoryLeakDetected (Container OOMKilled),Automated_SRE_Rollback_Daemon,Synthetic rollback event generated for degraded deployment telemetry
+RBK-8024,DEP-PIPE-1212-212,2026-08-23 18:12:56,HealthCheckFailed (HTTP 503 Service Unavailable on /healthz),OnCall_SRE_Lead,Synthetic rollback event generated for degraded deployment telemetry
+RBK-8025,DEP-PIPE-1217-217,2026-08-24 06:45:41,SecurityScanAlert_PostDeploy (Critical CVE in dynamic bundle),Automated_SRE_Rollback_Daemon,Synthetic rollback event generated for degraded deployment telemetry
+RBK-8026,DEP-PIPE-1223-223,2026-08-24 21:16:22,DatabaseDeadlockOnMigration (Schema lock timeout),OnCall_SRE_Lead,Synthetic rollback event generated for degraded deployment telemetry
+RBK-8027,DEP-PIPE-1232-232,2026-08-25 20:34:15,HealthCheckFailed (HTTP 503 Service Unavailable on /healthz),OnCall_SRE_Lead,Synthetic rollback event generated for degraded deployment telemetry
+RBK-8028,DEP-PIPE-1241-241,2026-08-26 19:17:52,LatencySLA_Exceeded (p99 latency spiked > 2500ms),OnCall_SRE_Lead,Synthetic rollback event generated for degraded deployment telemetry
