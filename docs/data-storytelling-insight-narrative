@@ -1,0 +1,101 @@
+# Data Storytelling & Insight Narrative
+
+## Objective
+
+Transform analytical findings into a clear business narrative that helps leadership understand the problem, evidence, underlying reason, and recommended actions.
+
+## Narrative Structure
+
+The analysis follows a five-part structure:
+
+`Context → Data → Finding → Why → Action`
+
+### 1. Context
+
+Explain the business problem and why the analysis matters.
+
+Customer churn is a major source of revenue loss. The purpose of the analysis is to understand the relationship between customer churn and support response time and identify actions that can reduce churn.
+
+### 2. Data
+
+Define the scope of the analysis.
+
+The analysis examines customer information, support interactions, response times, and renewal status. The analysis focuses on how differences in support response time relate to customer churn.
+
+### 3. Key Findings
+
+The analysis identifies a clear relationship between support response time and churn.
+
+- Customers receiving support within 2 hours have approximately 3% churn.
+- Customers receiving support within 2–4 hours have approximately 5% churn.
+- Customers receiving support within 4–24 hours have approximately 9% churn.
+- Customers waiting more than 24 hours have approximately 12% churn.
+- Customers waiting more than 24 hours show approximately 4x the churn rate of customers served within 2 hours.
+
+### 4. Why
+
+The analysis suggests that faster support can resolve customer problems before frustration increases.
+
+A review of churned customers indicates that customers who received slow support were more likely to leave after their problems remained unresolved for longer periods. Faster responses provide an opportunity to resolve issues before they contribute to customer dissatisfaction and churn.
+
+### 5. Action
+
+Recommended actions should be directly connected to the findings.
+
+1. Increase support capacity to reduce response times.
+2. Introduce a response-time SLA and monitor it as a regular business metric.
+3. Create priority support for high-value customers to protect important revenue.
+
+## Supporting Evidence
+
+Each finding should be supported by a specific chart, statistic, or concrete example.
+
+Important evidence includes:
+
+- Response time versus churn rate
+- Churn rate across response-time buckets
+- Comparison between the fastest and slowest response groups
+- Examples from reviewed churned customers
+
+Evidence should explain not only what the data shows but also why the finding matters to the business.
+
+## Business-Focused Communication
+
+The narrative should avoid unexplained technical terminology.
+
+Instead of focusing on statistical terms, communicate the business meaning of the analysis.
+
+For example:
+
+> Customers who wait more than 24 hours for support churn at a much higher rate than customers who receive help within 2 hours.
+
+The focus should remain on customer impact, revenue impact, and operational actions.
+
+## Actionable Recommendations
+
+Each recommendation should contain:
+
+- What action should be taken
+- Why the action is supported by the findings
+- Expected impact
+- Responsible owner
+- Timeline
+
+Recommendations should be specific enough that leadership can understand the next step without additional clarification.
+
+## Narrative Quality Checklist
+
+- Context clearly explains the business problem.
+- Data section defines the analysis scope.
+- Findings contain specific numbers.
+- Findings are supported by evidence.
+- The reason behind the observed pattern is explained.
+- Recommendations are connected to findings.
+- Recommendations contain clear actions and ownership.
+- Technical jargon is minimized.
+- The document can be understood without running code.
+- The narrative follows Context → Data → Finding → Why → Action.
+
+## Conclusion
+
+Effective data storytelling connects analysis to business decisions. A strong narrative does not simply present charts and metrics; it explains what the data shows, why the pattern matters, and what actions can be taken based on the findings.
