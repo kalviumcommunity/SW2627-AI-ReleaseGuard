@@ -1,0 +1,59 @@
+# Insight Export & Report Generation
+
+## Objective
+
+Create reliable export processes that make analytical results available in formats stakeholders can download, share, and use.
+
+## Output Formats
+
+### 1. Cleaned CSV Dataset
+
+CSV provides the underlying cleaned data for further analysis.
+
+The exported dataset should include metadata such as:
+
+- Data source
+- Refresh date
+- Record count
+- Data dictionary
+
+### 2. PDF Summary Report
+
+The PDF should provide a portable and shareable summary containing:
+
+- Executive summary
+- Key findings
+- Important analytical results
+- Relevant visualisations
+
+PDF reports are suitable for email, meetings, and offline sharing.
+
+### 3. HTML Interactive Report
+
+The HTML report can contain the complete analysis with interactive Plotly charts.
+
+Stakeholders can open the report in a browser and explore the visualisations without requiring the original analysis environment.
+
+## Reusable Export Function
+
+A reusable export function should accept:
+
+- DataFrame
+- Summary text
+- Charts
+- Output directory
+
+The function should generate the required CSV, PDF, and HTML outputs in one process.
+
+Example workflow:
+
+```text
+DataFrame
+    ↓
+CSV Export
+    ↓
+Summary → PDF
+    ↓
+Charts + Summary → HTML
+    ↓
+Metadata / README
