@@ -1,0 +1,95 @@
+
+## Objective
+
+Validate that SQL and Python calculations produce consistent business metrics and identify discrepancies before reporting.
+
+## Metrics Validated
+
+### 1. Active Users
+
+Active users are users who logged in within the last 30 days.
+
+- SQL: `COUNT(DISTINCT user_id)`
+- Python: `nunique()` on filtered `user_id`
+- Validation: Compare SQL and Python results.
+
+### 2. Average Order Value (AOV)
+
+AOV represents the average order amount.
+
+- SQL: `AVG(order_amount)`
+- Python: `mean()`
+- Validation: Compare both calculated values.
+
+### 3. Customer Churn
+
+Customer churn identifies customers who were active in the previous month but did not place an order in the current month.
+
+The calculation considers customers with `order_amount > 0` in the previous month.
+
+- SQL: Compare previous-month customers against current-month customers.
+- Python: Apply equivalent filtering and customer comparison logic.
+- Validation: Compare SQL and Python churn results.
+
+## Discrepancy Detection
+
+SQL and Python metric results are compared using:
+
+- Absolute difference
+- Percentage difference
+
+The validation tolerance is **0.1%**.
+
+Metrics with a percentage difference greater than 0.1% are flagged for investigation.
+
+## Common Causes of Differences
+
+Potential causes of SQL and Python metric drift include:
+
+- Different date handling
+- NULL vs NaN treatment
+- Rounding differences
+- Timezone differences
+- String case differences
+- Different filtering order
+- Join behavior
+- Data type conversion
+
+## Root Cause Investigation
+
+When a discrepancy is detected:
+
+1. Identify the affected metric.
+2. Select a specific discrepancy for investigation.
+3. Manually trace the relevant raw data.
+4. Compare the SQL and Python filtering/calculation logic.
+5. Identify the root cause.
+6. Correct the incorrect calculation layer.
+7. Re-run validation.
+8. Document the discrepancy and fix.
+
+## Validation Process
+
+The validation workflow is:
+
+`SQL Calculation → Python Calculation → Compare Results → Check Tolerance → Investigate Differences → Fix → Revalidate`
+
+## Manual Review
+
+Automated validation can detect that two calculations differ, but it cannot determine which calculation is correct.
+
+Manual investigation is therefore required to:
+
+- Verify the raw data
+- Identify the actual cause of the discrepancy
+- Determine which calculation is correct
+- Prevent incorrect automatic fixes
+
+A tolerance threshold only detects divergence; it does not prove correctness.
+
+## Conclusion
+
+SQL and Python metrics should be cross-validated before business insights are reported. Automated tolerance checks help identify metric drift, while manual root-cause analysis ensures that discrepancies are correctly understood and resolved.
+```
+
+This is suitable if you're keeping this assignment **docs-only**, but the official 2.44 assignment asks for `validation_script.py`, `validation_report.csv`, and `discrepancy_analysis.md` as well. 
