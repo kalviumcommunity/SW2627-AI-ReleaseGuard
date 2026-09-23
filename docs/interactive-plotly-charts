@@ -1,0 +1,107 @@
+# Interactive Plotly Chart Design
+
+## Objective
+
+Build interactive Plotly charts that allow stakeholders to explore data through hover tooltips, dropdown filters, zoom, pan, and other interactive controls.
+
+## 1. Hover Tooltips
+
+Hover tooltips provide detailed information when a user moves over a data point.
+
+The revenue trend chart should display:
+
+- Date
+- Revenue
+- Relevant order information
+
+The product performance chart should display:
+
+- Revenue
+- Order count
+- Average order value
+
+Custom formatting should be used for currencies and numeric values.
+
+## 2. Dropdown Filters
+
+A Plotly dropdown can allow users to switch between different metrics without reloading the data.
+
+The dashboard can provide views for:
+
+- Revenue
+- Profit
+- Order Count
+
+All required traces are loaded initially, while the dropdown controls which trace is visible.
+
+## 3. Zoom, Pan, and Reset
+
+Plotly provides built-in chart interactions.
+
+Required interactions:
+
+- Zoom into a selected region
+- Pan across the chart
+- Double-click to reset the view
+- Box or lasso selection
+
+These interactions allow users to explore specific portions of the dataset.
+
+## 4. Streamlit Integration
+
+Plotly charts can be embedded into a Streamlit dashboard using:
+
+`st.plotly_chart()`
+
+The dashboard can also provide sidebar filters such as:
+
+- Minimum order amount
+- Date filters
+
+The filtered data can then be displayed alongside the interactive chart.
+
+## 5. Date Range Selection
+
+Plotly provides two approaches for selecting time ranges:
+
+### Range Selector
+
+`rangeselector` provides predefined options such as:
+
+- Last Month
+- Last Quarter
+- YTD
+- All
+
+This is useful when users commonly need predefined time periods.
+
+### Range Slider
+
+`rangeslider` provides a draggable slider below the time-series chart.
+
+This is useful when users want to select a custom date range, such as a specific quarter or group of weeks.
+
+## 6. Interactive Chart Workflow
+
+The overall workflow is:
+
+`Load Data → Create Plotly Chart → Add Hover Information → Add Filters → Enable Interactions → Integrate with Streamlit → Validate`
+
+## Validation
+
+The charts should be tested to ensure:
+
+- Hover tooltips display correctly
+- Required data fields are shown
+- Dropdown filters switch metrics correctly
+- Zoom works
+- Pan works
+- Double-click resets the chart
+- Box/lasso selection works
+- Streamlit displays the Plotly charts correctly
+- Filters update the displayed data
+- Date range controls work as expected
+
+## Conclusion
+
+Interactive Plotly charts allow stakeholders to explore analytical data without requiring a new chart for every question. Hover tooltips, dropdown filters, zoom, pan, selection, and date range controls make analytical visualisations more flexible and easier to explore.
