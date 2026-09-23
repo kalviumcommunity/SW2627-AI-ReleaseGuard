@@ -7,7 +7,9 @@
 [![License](https://img.shields.io/badge/License-MIT-purple.svg)](LICENSE)
 
 > **Repository:** `SW2627-AI-ReleaseGuard`  
+
 > **Author:** Saanvi Garg  And Glory Jain
+
 > **Course / Cohort:** Kalvium Community — Data Engineering
 
 ---
@@ -157,14 +159,14 @@ The `composite_risk_score` calculates a single actionable risk index combining t
 
 $$\text{Composite Risk} = \text{Clip}_{0}^{100}\left( 15.0 + P_{\text{after-hours}} + P_{\text{weekend}} + P_{\text{test}} + P_{\text{security}} + P_{\text{outcome}} + P_{\text{priority}} + P_{\text{sla}} \right)$$
 
-- **Baseline Risk**: $15.0$
-- **After-Hours Penalty ($P_{\text{after-hours}}$)**: $+18.0$ if `is_after_hours == 1`
-- **Weekend Penalty ($P_{\text{weekend}}$)**: $+22.0$ if `is_weekend == 1`
-- **Test Pass Penalty ($P_{\text{test}}$)**: $+80 \times (0.95 - \text{test\_pass\_rate})$ if `test_pass_rate < 0.95`
-- **Security Penalty ($P_{\text{security}}$)**: $\min(\text{security\_finding\_count} \times 6.0, 24.0)$
-- **Outcome Penalty ($P_{\text{outcome}}$)**: $+35.0$ for `rolled_back`, $+20.0$ for `alerted`
-- **Severity Penalty ($P_{\text{priority}}$)**: $+25.0$ for P1, $+15.0$ for P2, $+8.0$ for P3
-- **SLA Violation Penalty ($P_{\text{sla}}$)**: $+12.0$ if `sla_breach_flag == 1`
+- **Baseline Risk**: 15.0
+- **After-Hours Penalty ($P_{\text{after-hours}}$)**: +18.0 if `is_after_hours == 1`
+- **Weekend Penalty ($P_{\text{weekend}}$)**: +22.0 if `is_weekend == 1`
+- **Test Pass Penalty ($P_{\text{test}}$)**: `+80 * (0.95 - test_pass_rate)` if `test_pass_rate < 0.95`
+- **Security Penalty ($P_{\text{security}}$)**: `min(security_finding_count * 6.0, 24.0)`
+- **Outcome Penalty ($P_{\text{outcome}}$)**: +35.0 for `rolled_back`, +20.0 for `alerted`
+- **Severity Penalty ($P_{\text{priority}}$)**: +25.0 for P1, +15.0 for P2, +8.0 for P3
+- **SLA Violation Penalty ($P_{\text{sla}}$)**: +12.0 if `sla_breach_flag == 1`
 
 ---
 
