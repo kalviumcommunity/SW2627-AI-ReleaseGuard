@@ -73,8 +73,81 @@ def standardize_timestamp(val) -> str:
     except Exception:
         return None
 
+def normalize_and_alias_deployment_columns(df: pd.DataFrame) -> pd.DataFrame:
+    """Normalizes column names and maps common synonyms for deployment logs."""
+    col_map = {c: str(c).strip().lower().replace(" ", "_").replace("-", "_") for c in df.columns}
+    df = df.rename(columns=col_map)
+    
+    alias_rules = {
+        "deployment_id": ["deployment_id", "deploy_id", "id", "pipeline_id", "run_id", "build_id", "job_id"],
+        "deploy_timestamp": ["deploy_timestamp", "timestamp", "deployed_at", "deploy_time", "created_at", "time", "date"],
+        "service": ["service", "service_name", "job_name", "app", "application", "repo", "repository"],
+        "environment": ["environment", "env", "target_env", "deploy_env", "stage"],
+        "deployed_by": ["deployed_by", "user", "author", "committer", "triggered_by", "actor"],
+        "status": ["status", "result", "conclusion", "state", "outcome"],
+    }
+    for canonical, aliases in alias_rules.items():
+        if canonical not in df.columns:
+            for alias in aliases:
+                if alias in df.columns:
+                    df[canonical] = df[alias]
+                    break
+                    
+    if "deployment_id" not in df.columns:
+        df["deployment_id"] = [f"DEP-{i:05d}" for i in range(1, len(df) + 1)]
+        
+    if "deploy_timestamp" not in df.columns:
+        for c in df.columns:
+            if any(k in c for k in ["time", "date", "dt"]):
+                df["deploy_timestamp"] = df[c]
+                break
+        else:
+            df["deploy_timestamp"] = datetime.utcnow().strftime("%Y-%m-%d %H:%M:%S")
+            
+    return df
+
+
+def normalize_and_alias_incident_columns(df: pd.DataFrame) -> pd.DataFrame:
+    """Normalizes column names and maps common synonyms for incident logs."""
+    col_map = {c: str(c).strip().lower().replace(" ", "_").replace("-", "_") for c in df.columns}
+    df = df.rename(columns=col_map)
+    
+    alias_rules = {
+        "opened_at": ["opened_at", "opened_time", "opened", "open_time", "open_date", "opened_date", "sys_created_on", "created_at", "timestamp", "time", "date"],
+        "resolved_at": ["resolved_at", "resolved_time", "resolved", "close_time", "closed_at", "end_time", "sys_updated_on"],
+        "closed_at": ["closed_at", "close_time", "closed_time", "closed_date"],
+        "incident_id": ["incident_id", "number", "inc_id", "id", "ticket_id", "incident_number", "incident_key"],
+        "category": ["category", "service", "topic", "type", "domain", "affected_item"],
+        "priority": ["priority", "severity", "prio", "urgency", "impact"],
+        "assignment_group": ["assignment_group", "group", "team", "assigned_to", "owner"],
+    }
+    for canonical, aliases in alias_rules.items():
+        if canonical not in df.columns:
+            for alias in aliases:
+                if alias in df.columns:
+                    df[canonical] = df[alias]
+                    break
+                    
+    if "opened_at" not in df.columns:
+        for c in df.columns:
+            if any(k in c for k in ["time", "date", "dt"]):
+                df["opened_at"] = df[c]
+                break
+        else:
+            df["opened_at"] = datetime.utcnow().strftime("%Y-%m-%d %H:%M:%S")
+            
+    if "incident_id" not in df.columns:
+        if "number" in df.columns:
+            df["incident_id"] = df["number"]
+        else:
+            df["incident_id"] = [f"INC{i:06d}" for i in range(1, len(df) + 1)]
+            
+    return df
+
+
 def clean_deployments(df: pd.DataFrame, clean_log: CleaningLogger) -> pd.DataFrame:
     logger.info(f"Cleaning deployments dataset (initial rows: {len(df)})")
+    df = normalize_and_alias_deployment_columns(df)
     
     # 1. Null handling
     for idx, row in df.iterrows():
@@ -101,7 +174,7 @@ def clean_deployments(df: pd.DataFrame, clean_log: CleaningLogger) -> pd.DataFra
             
     # 3. Deduplication (keep most recent)
     initial_count = len(df)
-    df["dt_temp"] = pd.to_datetime(df["deploy_timestamp"])
+    df["dt_temp"] = pd.to_datetime(df["deploy_timestamp"], errors="coerce")
     df = df.sort_values(by="dt_temp").drop_duplicates(subset=["deployment_id"], keep="last").drop(columns=["dt_temp"])
     dropped_count = initial_count - len(df)
     if dropped_count > 0:
@@ -111,9 +184,7 @@ def clean_deployments(df: pd.DataFrame, clean_log: CleaningLogger) -> pd.DataFra
 
 def clean_incidents(df: pd.DataFrame, clean_log: CleaningLogger) -> pd.DataFrame:
     logger.info(f"Cleaning incidents dataset (initial rows: {len(df)})")
-    
-    if "incident_id" not in df.columns and "number" in df.columns:
-        df["incident_id"] = df["number"]
+    df = normalize_and_alias_incident_columns(df)
     
     # 1. Null handling
     for idx, row in df.iterrows():
@@ -142,8 +213,11 @@ def clean_incidents(df: pd.DataFrame, clean_log: CleaningLogger) -> pd.DataFrame
                     
     # 3. Deduplication (keep most recent state snapshot)
     initial_count = len(df)
-    sort_col = "sys_updated_at" if "sys_updated_at" in df.columns else "opened_at"
-    df["sort_dt"] = pd.to_datetime(df[sort_col])
+    sort_col = "sys_updated_at" if "sys_updated_at" in df.columns else ("opened_at" if "opened_at" in df.columns else None)
+    if sort_col and sort_col in df.columns:
+        df["sort_dt"] = pd.to_datetime(df[sort_col], errors="coerce")
+    else:
+        df["sort_dt"] = range(len(df))
     df = df.sort_values(by="sort_dt").drop_duplicates(subset=["incident_id"], keep="last").drop(columns=["sort_dt"])
     dropped_count = initial_count - len(df)
     if dropped_count > 0:

@@ -103,9 +103,9 @@ def run_join_validation():
     logger.info(f"Loaded {len(df_dep)} deployments, {len(df_inc)} incidents, {len(df_rbk)} rollbacks")
     
     # Parse datetimes for temporal comparison
-    df_dep["dep_dt"] = pd.to_datetime(df_dep["deploy_timestamp"])
-    df_inc["inc_opened_dt"] = pd.to_datetime(df_inc["opened_at"])
-    df_inc["inc_resolved_dt"] = pd.to_datetime(df_inc["resolved_at"])
+    df_dep["dep_dt"] = pd.to_datetime(df_dep["deploy_timestamp"] if "deploy_timestamp" in df_dep.columns else pd.Timestamp.now(), errors="coerce")
+    df_inc["inc_opened_dt"] = pd.to_datetime(df_inc["opened_at"] if "opened_at" in df_inc.columns else pd.Timestamp.now(), errors="coerce")
+    df_inc["inc_resolved_dt"] = pd.to_datetime(df_inc["resolved_at"] if "resolved_at" in df_inc.columns else None, errors="coerce")
     
     matched_incident_ids = set()
     deployment_outcomes = []
@@ -113,26 +113,26 @@ def run_join_validation():
     # -------------------------------------------------------------
     # 1. Join Deployments -> Rollbacks (Exact FK Join)
     # -------------------------------------------------------------
-    rbk_dict = {row["deployment_id"]: row for _, row in df_rbk.iterrows()}
+    rbk_dict = {row["deployment_id"]: row for _, row in df_rbk.iterrows()} if "deployment_id" in df_rbk.columns else {}
     
     # -------------------------------------------------------------
     # 2. Join Deployments -> Incidents (2-Hour Window Heuristic Join)
     # -------------------------------------------------------------
     for _, dep in df_dep.iterrows():
-        dep_id = dep["deployment_id"]
-        dep_time = dep["dep_dt"]
-        svc = dep["service"]
+        dep_id = dep.get("deployment_id", "DEP-UNKNOWN")
+        dep_time = dep.get("dep_dt", pd.Timestamp.now())
+        svc = dep.get("service", "unknown-service")
         
         # Check explicit rollback
         rbk_match = rbk_dict.get(dep_id, None)
         has_rollback = rbk_match is not None
         
         # Find matching incidents within [T_deploy, T_deploy + 2 hours]
-        window_end = dep_time + pd.Timedelta(hours=2)
+        window_end = dep_time + pd.Timedelta(hours=2) if pd.notnull(dep_time) else pd.Timestamp.now()
         candidate_incidents = df_inc[
             (df_inc["inc_opened_dt"] >= dep_time) & 
             (df_inc["inc_opened_dt"] <= window_end)
-        ]
+        ] if pd.notnull(dep_time) else pd.DataFrame()
         
         best_inc = None
         best_rank = 999
@@ -158,7 +158,7 @@ def run_join_validation():
             "pipeline_id": dep.get("pipeline_id", ""),
             "service": svc,
             "environment": dep.get("environment", "production"),
-            "deploy_timestamp": dep["deploy_timestamp"],
+            "deploy_timestamp": dep.get("deploy_timestamp", str(dep_time)),
             "deployed_by": dep.get("deployed_by", "system_bot"),
             "status": dep.get("status", "Success"),
             "commit_id": dep.get("commit_id", ""),
@@ -167,18 +167,22 @@ def run_join_validation():
             "has_rollback": 1 if has_rollback else 0,
             "rollback_id": rbk_match.get("rollback_id", None) if rbk_match is not None else None,
             "rollback_reason": rbk_match.get("reason", None) if rbk_match is not None else None,
-            "matched_incident_id": best_inc["incident_id"] if best_inc is not None else None,
-            "incident_priority": best_inc["priority"] if best_inc is not None else None,
-            "incident_category": best_inc["category"] if best_inc is not None else None,
-            "incident_opened_at": best_inc["opened_at"] if best_inc is not None else None,
-            "incident_resolved_at": best_inc["resolved_at"] if best_inc is not None else None
+            "matched_incident_id": best_inc.get("incident_id") if best_inc is not None else None,
+            "incident_priority": best_inc.get("priority") if best_inc is not None else None,
+            "incident_category": best_inc.get("category") if best_inc is not None else None,
+            "incident_opened_at": best_inc.get("opened_at") if best_inc is not None else None,
+            "incident_resolved_at": best_inc.get("resolved_at") if best_inc is not None else None
         }
         
         # Calculate Time to Resolution (TTR) in hours if incident exists
-        if best_inc is not None and pd.notnull(best_inc["opened_at"]) and pd.notnull(best_inc["resolved_at"]):
-            ttr = (pd.to_datetime(best_inc["resolved_at"]) - pd.to_datetime(best_inc["opened_at"])).total_seconds() / 3600.0
-            rec["time_to_resolution_hours"] = round(ttr, 2)
-            matched_incident_ids.add(best_inc["incident_id"])
+        if best_inc is not None and pd.notnull(best_inc.get("opened_at")) and pd.notnull(best_inc.get("resolved_at")):
+            try:
+                ttr = (pd.to_datetime(best_inc["resolved_at"]) - pd.to_datetime(best_inc["opened_at"])).total_seconds() / 3600.0
+                rec["time_to_resolution_hours"] = round(ttr, 2)
+            except Exception:
+                rec["time_to_resolution_hours"] = None
+            if "incident_id" in best_inc and pd.notnull(best_inc["incident_id"]):
+                matched_incident_ids.add(best_inc["incident_id"])
         else:
             rec["time_to_resolution_hours"] = None
             
@@ -192,7 +196,7 @@ def run_join_validation():
     # -------------------------------------------------------------
     # 3. Join Audit & Orphaned Record Telemetry
     # -------------------------------------------------------------
-    all_incident_ids = set(df_inc["incident_id"].dropna())
+    all_incident_ids = set(df_inc["incident_id"].dropna()) if "incident_id" in df_inc.columns else set()
     orphaned_incidents = all_incident_ids - matched_incident_ids
     
     outcome_distribution = df_outcomes["outcome"].value_counts().to_dict()

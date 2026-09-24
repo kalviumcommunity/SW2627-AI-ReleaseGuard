@@ -157,8 +157,13 @@ def run_feature_engineering():
     
     # Time to resolution & SLA features
     if "opened_at" in df.columns and "resolved_at" in df.columns:
-        open_dt = pd.to_datetime(df["opened_at"])
-        res_dt = pd.to_datetime(df["resolved_at"])
+        open_dt = pd.to_datetime(df["opened_at"], errors="coerce")
+        res_dt = pd.to_datetime(df["resolved_at"], errors="coerce")
+        df["time_to_resolution_hours"] = (res_dt - open_dt).dt.total_seconds() / 3600.0
+        df["time_to_resolution_hours"] = df["time_to_resolution_hours"].fillna(0.0).round(2)
+    elif "incident_opened_at" in df.columns and "incident_resolved_at" in df.columns:
+        open_dt = pd.to_datetime(df["incident_opened_at"], errors="coerce")
+        res_dt = pd.to_datetime(df["incident_resolved_at"], errors="coerce")
         df["time_to_resolution_hours"] = (res_dt - open_dt).dt.total_seconds() / 3600.0
         df["time_to_resolution_hours"] = df["time_to_resolution_hours"].fillna(0.0).round(2)
     else:

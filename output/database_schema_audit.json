@@ -157,31 +157,31 @@
                 {
                     "id": 13,
                     "name": "matched_incident_id",
-                    "type": "TEXT",
+                    "type": "REAL",
                     "notnull": 0
                 },
                 {
                     "id": 14,
                     "name": "incident_priority",
-                    "type": "TEXT",
+                    "type": "REAL",
                     "notnull": 0
                 },
                 {
                     "id": 15,
                     "name": "incident_category",
-                    "type": "TEXT",
+                    "type": "REAL",
                     "notnull": 0
                 },
                 {
                     "id": 16,
                     "name": "incident_opened_at",
-                    "type": "TEXT",
+                    "type": "REAL",
                     "notnull": 0
                 },
                 {
                     "id": 17,
                     "name": "incident_resolved_at",
-                    "type": "TEXT",
+                    "type": "REAL",
                     "notnull": 0
                 },
                 {
@@ -325,228 +325,90 @@
             ]
         },
         "incidents": {
-            "row_count": 450,
-            "column_count": 37,
+            "row_count": 12,
+            "column_count": 14,
             "columns": [
                 {
                     "id": 0,
-                    "name": "number",
+                    "name": "pipeline_id",
                     "type": "TEXT",
                     "notnull": 0
                 },
                 {
                     "id": 1,
-                    "name": "incident_id",
+                    "name": "stage_name",
                     "type": "TEXT",
                     "notnull": 0
                 },
                 {
                     "id": 2,
-                    "name": "incident_state",
+                    "name": "job_name",
                     "type": "TEXT",
                     "notnull": 0
                 },
                 {
                     "id": 3,
-                    "name": "active",
-                    "type": "INTEGER",
+                    "name": "status",
+                    "type": "TEXT",
                     "notnull": 0
                 },
                 {
                     "id": 4,
-                    "name": "reassignment_count",
-                    "type": "INTEGER",
+                    "name": "timestamp",
+                    "type": "TEXT",
                     "notnull": 0
                 },
                 {
                     "id": 5,
-                    "name": "reopen_count",
-                    "type": "INTEGER",
+                    "name": "commit_id",
+                    "type": "TEXT",
                     "notnull": 0
                 },
                 {
                     "id": 6,
-                    "name": "sys_mod_count",
-                    "type": "INTEGER",
+                    "name": "branch",
+                    "type": "TEXT",
                     "notnull": 0
                 },
                 {
                     "id": 7,
-                    "name": "made_sla",
-                    "type": "INTEGER",
+                    "name": "user",
+                    "type": "TEXT",
                     "notnull": 0
                 },
                 {
                     "id": 8,
-                    "name": "caller_id",
+                    "name": "environment",
                     "type": "TEXT",
                     "notnull": 0
                 },
                 {
                     "id": 9,
-                    "name": "opened_by",
-                    "type": "TEXT",
-                    "notnull": 0
-                },
-                {
-                    "id": 10,
                     "name": "opened_at",
                     "type": "TEXT",
                     "notnull": 0
                 },
                 {
+                    "id": 10,
+                    "name": "incident_id",
+                    "type": "TEXT",
+                    "notnull": 0
+                },
+                {
                     "id": 11,
-                    "name": "sys_created_by",
-                    "type": "TEXT",
-                    "notnull": 0
-                },
-                {
-                    "id": 12,
-                    "name": "sys_created_at",
-                    "type": "TEXT",
-                    "notnull": 0
-                },
-                {
-                    "id": 13,
-                    "name": "sys_updated_by",
-                    "type": "TEXT",
-                    "notnull": 0
-                },
-                {
-                    "id": 14,
-                    "name": "sys_updated_at",
-                    "type": "TEXT",
-                    "notnull": 0
-                },
-                {
-                    "id": 15,
-                    "name": "contact_type",
-                    "type": "TEXT",
-                    "notnull": 0
-                },
-                {
-                    "id": 16,
-                    "name": "location",
-                    "type": "TEXT",
-                    "notnull": 0
-                },
-                {
-                    "id": 17,
                     "name": "category",
                     "type": "TEXT",
                     "notnull": 0
                 },
                 {
-                    "id": 18,
-                    "name": "subcategory",
-                    "type": "TEXT",
-                    "notnull": 0
-                },
-                {
-                    "id": 19,
-                    "name": "u_symptom",
-                    "type": "TEXT",
-                    "notnull": 0
-                },
-                {
-                    "id": 20,
-                    "name": "cmdb_ci",
-                    "type": "TEXT",
-                    "notnull": 0
-                },
-                {
-                    "id": 21,
-                    "name": "impact",
-                    "type": "TEXT",
-                    "notnull": 0
-                },
-                {
-                    "id": 22,
-                    "name": "urgency",
-                    "type": "TEXT",
-                    "notnull": 0
-                },
-                {
-                    "id": 23,
+                    "id": 12,
                     "name": "priority",
                     "type": "TEXT",
                     "notnull": 0
                 },
                 {
-                    "id": 24,
+                    "id": 13,
                     "name": "assignment_group",
-                    "type": "TEXT",
-                    "notnull": 0
-                },
-                {
-                    "id": 25,
-                    "name": "assigned_to",
-                    "type": "TEXT",
-                    "notnull": 0
-                },
-                {
-                    "id": 26,
-                    "name": "knowledge",
-                    "type": "INTEGER",
-                    "notnull": 0
-                },
-                {
-                    "id": 27,
-                    "name": "u_priority_confirmation",
-                    "type": "INTEGER",
-                    "notnull": 0
-                },
-                {
-                    "id": 28,
-                    "name": "notify",
-                    "type": "TEXT",
-                    "notnull": 0
-                },
-                {
-                    "id": 29,
-                    "name": "problem_id",
-                    "type": "TEXT",
-                    "notnull": 0
-                },
-                {
-                    "id": 30,
-                    "name": "rfc",
-                    "type": "TEXT",
-                    "notnull": 0
-                },
-                {
-                    "id": 31,
-                    "name": "vendor",
-                    "type": "REAL",
-                    "notnull": 0
-                },
-                {
-                    "id": 32,
-                    "name": "caused_by",
-                    "type": "REAL",
-                    "notnull": 0
-                },
-                {
-                    "id": 33,
-                    "name": "closed_code",
-                    "type": "TEXT",
-                    "notnull": 0
-                },
-                {
-                    "id": 34,
-                    "name": "resolved_by",
-                    "type": "TEXT",
-                    "notnull": 0
-                },
-                {
-                    "id": 35,
-                    "name": "resolved_at",
-                    "type": "TEXT",
-                    "notnull": 0
-                },
-                {
-                    "id": 36,
-                    "name": "closed_at",
                     "type": "TEXT",
                     "notnull": 0
                 }
@@ -771,19 +633,19 @@
                 {
                     "id": 18,
                     "name": "matched_incident_id",
-                    "type": "TEXT",
+                    "type": "REAL",
                     "notnull": 0
                 },
                 {
                     "id": 19,
                     "name": "incident_priority",
-                    "type": "TEXT",
+                    "type": "REAL",
                     "notnull": 0
                 },
                 {
                     "id": 20,
                     "name": "incident_category",
-                    "type": "TEXT",
+                    "type": "REAL",
                     "notnull": 0
                 },
                 {
@@ -873,7 +735,7 @@
             ]
         },
         "vw_incident_resolution_metrics": {
-            "row_count": 20,
+            "row_count": 0,
             "column_count": 7,
             "columns": [
                 {
@@ -885,7 +747,7 @@
                 {
                     "id": 1,
                     "name": "incident_category",
-                    "type": "TEXT",
+                    "type": "REAL",
                     "notnull": 0
                 },
                 {
