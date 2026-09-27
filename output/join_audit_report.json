@@ -1,5 +1,5 @@
 {
-    "execution_timestamp": "2026-09-24T05:31:24.914270+00:00Z",
+    "execution_timestamp": "2026-09-27T10:15:58.125512+00:00Z",
     "total_deployments": 250,
     "outcome_distribution": {
         "stable": 214,
@@ -7,9 +7,9 @@
     },
     "deployments_with_rollbacks": 28,
     "deployments_with_incidents": 0,
-    "total_incidents_analyzed": 12,
+    "total_incidents_analyzed": 10,
     "incidents_matched_to_deployments": 0,
-    "orphaned_incidents_count": 12,
+    "orphaned_incidents_count": 10,
     "orphaned_incidents_ratio_pct": 100.0,
     "join_matching_logic": {
         "temporal_window_hours": 2.0,

@@ -325,60 +325,60 @@
             ]
         },
         "incidents": {
-            "row_count": 12,
+            "row_count": 10,
             "column_count": 14,
             "columns": [
                 {
                     "id": 0,
-                    "name": "pipeline_id",
-                    "type": "TEXT",
+                    "name": "workflow_run_id",
+                    "type": "INTEGER",
                     "notnull": 0
                 },
                 {
                     "id": 1,
-                    "name": "stage_name",
+                    "name": "repository",
                     "type": "TEXT",
                     "notnull": 0
                 },
                 {
                     "id": 2,
-                    "name": "job_name",
+                    "name": "workflow_name",
                     "type": "TEXT",
                     "notnull": 0
                 },
                 {
                     "id": 3,
-                    "name": "status",
+                    "name": "event_trigger",
                     "type": "TEXT",
                     "notnull": 0
                 },
                 {
                     "id": 4,
-                    "name": "timestamp",
+                    "name": "status",
                     "type": "TEXT",
                     "notnull": 0
                 },
                 {
                     "id": 5,
-                    "name": "commit_id",
+                    "name": "conclusion",
                     "type": "TEXT",
                     "notnull": 0
                 },
                 {
                     "id": 6,
-                    "name": "branch",
+                    "name": "created_at",
                     "type": "TEXT",
                     "notnull": 0
                 },
                 {
                     "id": 7,
-                    "name": "user",
+                    "name": "updated_at",
                     "type": "TEXT",
                     "notnull": 0
                 },
                 {
                     "id": 8,
-                    "name": "environment",
+                    "name": "runner_os",
                     "type": "TEXT",
                     "notnull": 0
                 },

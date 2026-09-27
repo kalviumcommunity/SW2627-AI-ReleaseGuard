@@ -1,13 +1,11 @@
-pipeline_id,stage_name,job_name,status,timestamp,commit_id,branch,user,environment,opened_at,incident_id,category,priority,assignment_group
-PIPE-10492,Deploy,deploy-auth-service,SUCCESS,2024-03-15 14:22:10,a8f10bc,main,alex.dev,production,2024-03-15 14:22:10,INC000001,General / Unknown,4 - Low,Global-Service-Desk
-PIPE-10493,Build,build-payment-service,SUCCESS,2024-03-15 14:25:30,b7c21de,main,github-actions,production,2024-03-15 14:25:30,INC000002,General / Unknown,4 - Low,Global-Service-Desk
-PIPE-10494,Test,test-payment-service,FAILED,2024-03-15 14:29:45,b7c21de,main,github-actions,staging,2024-03-15 14:29:45,INC000003,General / Unknown,4 - Low,Global-Service-Desk
-PIPE-10495,Deploy,deploy-payment-service,SUCCESS,2024-03-15 14:35:12,c9d32ef,release/v2.1,alex.dev,production,2024-03-15 14:35:12,INC000004,General / Unknown,4 - Low,Global-Service-Desk
-PIPE-10496,Deploy,deploy-user-service,FAILED,2024-03-15 15:05:20,d4e43fa,main,priya.dev,canary,2024-03-15 15:05:20,INC000005,General / Unknown,4 - Low,Global-Service-Desk
-PIPE-10497,Build,build-auth-service,SUCCESS,2024-03-15 15:12:08,e5f54ab,main,github-actions,staging,2024-03-15 15:12:08,INC000006,General / Unknown,4 - Low,Global-Service-Desk
-PIPE-10498,Deploy,deploy-auth-service,SUCCESS,2024-03-15 15:18:40,e5f54ab,main,github-actions,staging,2024-03-15 15:18:40,INC000007,General / Unknown,4 - Low,Global-Service-Desk
-PIPE-10499,Test,test-user-service,SUCCESS,2024-03-15 15:25:15,d4e43fa,main,priya.dev,canary,2024-03-15 15:25:15,INC000008,General / Unknown,4 - Low,Global-Service-Desk
-PIPE-10500,Deploy,deploy-order-service,FAILED,2024-03-15 16:02:33,f6a65bc,release/v2.1,rohan.dev,production,2024-03-15 16:02:33,INC000009,General / Unknown,4 - Low,Global-Service-Desk
-PIPE-10501,Deploy,deploy-payment-service,SUCCESS,2024-03-15 16:40:05,g7b76cd,release/v2.1,rohan.dev,production,2024-03-15 16:40:05,INC000010,General / Unknown,4 - Low,Global-Service-Desk
-PIPE-10502,Build,build-order-service,SUCCESS,2024-03-15 17:01:22,h8c87de,main,github-actions,staging,2024-03-15 17:01:22,INC000011,General / Unknown,4 - Low,Global-Service-Desk
-PIPE-10503,Deploy,deploy-order-service,SUCCESS,2024-03-15 17:15:48,h8c87de,main,github-actions,staging,2024-03-15 17:15:48,INC000012,General / Unknown,4 - Low,Global-Service-Desk
+workflow_run_id,repository,workflow_name,event_trigger,status,conclusion,created_at,updated_at,runner_os,opened_at,incident_id,category,priority,assignment_group
+928374615,org/payment-service,Production Release CD,push,completed,success,2024-03-15 14:00:00,2024-03-15 14:18:00,ubuntu-latest,2024-03-15 14:00:00,INC000001,General / Unknown,4 - Low,Global-Service-Desk
+928374616,org/auth-service,Production Release CD,push,completed,success,2024-03-15 14:15:00,2024-03-15 14:30:00,ubuntu-latest,2024-03-15 14:15:00,INC000002,General / Unknown,4 - Low,Global-Service-Desk
+928374617,org/payment-service,Test Suite,push,completed,failure,2024-03-15 14:25:00,2024-03-15 14:42:00,ubuntu-latest,2024-03-15 14:25:00,INC000003,General / Unknown,4 - Low,Global-Service-Desk
+928374618,org/user-service,Production Release CD,workflow_dispatch,completed,failure,2024-03-15 15:00:00,2024-03-15 15:22:00,ubuntu-latest,2024-03-15 15:00:00,INC000004,General / Unknown,4 - Low,Global-Service-Desk
+928374619,org/auth-service,Staging Deploy,push,completed,success,2024-03-15 15:10:00,2024-03-15 15:27:00,ubuntu-latest,2024-03-15 15:10:00,INC000005,General / Unknown,4 - Low,Global-Service-Desk
+928374620,org/order-service,Production Release CD,push,completed,failure,2024-03-15 15:55:00,2024-03-15 16:12:00,ubuntu-latest,2024-03-15 15:55:00,INC000006,General / Unknown,4 - Low,Global-Service-Desk
+928374621,org/payment-service,Production Release CD,workflow_dispatch,completed,success,2024-03-15 16:30:00,2024-03-15 16:48:00,ubuntu-latest,2024-03-15 16:30:00,INC000007,General / Unknown,4 - Low,Global-Service-Desk
+928374622,org/order-service,Staging Deploy,push,completed,success,2024-03-15 17:00:00,2024-03-15 17:16:00,ubuntu-latest,2024-03-15 17:00:00,INC000008,General / Unknown,4 - Low,Global-Service-Desk
+928374623,org/auth-service,Production Release CD,push,in_progress,,2024-03-15 17:20:00,2024-03-15 17:24:00,ubuntu-latest,2024-03-15 17:20:00,INC000009,General / Unknown,4 - Low,Global-Service-Desk
+928374624,org/payment-service,Rollback Workflow,workflow_dispatch,completed,cancelled,2024-03-15 17:45:00,2024-03-15 17:49:00,ubuntu-latest,2024-03-15 17:45:00,INC000010,General / Unknown,4 - Low,Global-Service-Desk
